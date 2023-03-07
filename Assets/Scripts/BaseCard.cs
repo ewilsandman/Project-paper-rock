@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,16 @@ public class BaseCard : MonoBehaviour
     void Start()
     {
         
+    }
+
+    private void OnMouseOver()
+    {
+        
+    }
+
+    private void OnMouseDown()
+    {
+        Debug.Log("clicked");
     }
 
     // Update is called once per frame
