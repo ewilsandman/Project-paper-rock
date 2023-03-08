@@ -24,6 +24,12 @@ public class BaseCard : MonoBehaviour
         
     }
 
+    public void NewPos(float x, float y)
+    {
+        Debug.Log(transform.position); 
+        //transform.position = new Vector3(x, y, 0);
+    }
+
     private void OnMouseDown()
     {
         Debug.Log("clicked");
