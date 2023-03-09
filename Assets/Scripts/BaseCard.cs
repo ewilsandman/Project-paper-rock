@@ -1,12 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BaseCard : MonoBehaviour
 {
+    public CoreLoop turnHandler;
+    
     public int cost;
-    public bool minion;
+    public bool minionSpawning;
+    public Minion minionRef;
+    public int minionCount;
+    public Hand handRef;
+    public Board boardRef;
 
     public int health;
     public int strength;
@@ -32,7 +39,27 @@ public class BaseCard : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("clicked");
+        if (turnHandler.TurnActive)
+        {
+            if (minionSpawning)
+            {
+                if (boardRef.PlaceforMinion())
+                {
+                    for (int i = 0; i < minionCount; i++)
+                    {
+                        Minion templateMinion = minionRef;
+                        boardRef.AddMinion(templateMinion, true);
+                    }
+
+                    handRef.RemoveCard(this);
+                    //Destroy(gameObject);
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("Wait for your turn");
+        }
     }
 
     // Update is called once per frame

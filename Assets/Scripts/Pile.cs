@@ -6,7 +6,7 @@ public class Pile : MonoBehaviour
 {
     [SerializeField] private List<BaseCard> possibleCards; // will probably make a system to customize deck later
     private List<BaseCard> _pileCards;
-    private int maxPile = 10;
+    private int maxPile = 30;
     // Start is called before the first frame update
     void Start()
     {

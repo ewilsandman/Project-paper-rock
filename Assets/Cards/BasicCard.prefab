@@ -54,10 +54,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce872d8def6e1045aa2a7f4a01c39b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 0
-  minion: 0
-  health: 0
-  strength: 0
+  cost: 2
+  minionSpawning: 1
+  minionRef: {fileID: 2303190162502371044, guid: b9bddd2e488c4cf48b68d6b33f0bb783,
+    type: 3}
+  minionCount: 1
+  handRef: {fileID: 0}
+  boardRef: {fileID: 0}
+  health: 2
+  strength: 3
 --- !u!222 &2116517198080980426
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -103,7 +108,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 523271062592670820}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
