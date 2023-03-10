@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 523271062592670821}
   - component: {fileID: 2116517198080980426}
   - component: {fileID: 3234773334963863695}
-  - component: {fileID: 539373839}
   - component: {fileID: 539373840}
   - component: {fileID: 539373841}
   m_Layer: 0
@@ -54,6 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce872d8def6e1045aa2a7f4a01c39b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnHandler: {fileID: 0}
   cost: 2
   minionSpawning: 1
   minionRef: {fileID: 2303190162502371044, guid: b9bddd2e488c4cf48b68d6b33f0bb783,
@@ -101,27 +101,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!223 &539373839
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 523271062592670820}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 1
-  m_TargetDisplay: 0
 --- !u!65 &539373840
 BoxCollider:
   m_ObjectHideFlags: 0

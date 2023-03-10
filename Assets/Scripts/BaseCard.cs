@@ -3,56 +3,45 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class BaseCard : MonoBehaviour
+public class BaseCard : MonoBehaviour // particularly special cards will have additional scripts and tags
 {
     public CoreLoop turnHandler;
     
     public int cost;
     public bool minionSpawning;
     public Minion minionRef;
-    public int minionCount;
+    public int minionCount; // currently unused
     public Hand handRef;
     public Board boardRef;
 
-    public int health;
-    public int strength;
+    [SerializeField] public Text healthText;
+    [SerializeField] public Text StrenghtText;
+    [SerializeField] public Text CostText;
     
-    
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+     public int health; // these could change in hand
+    public int strength; //
 
-    private void OnMouseOver()
-    {
-        
-    }
-
-    public void NewPos(float x, float y)
-    {
-        Debug.Log(transform.position); 
-        //transform.position = new Vector3(x, y, 0);
-    }
+    private void OnMouseOver() // TODO:visualize that player can/cant deploy card
+    { }
 
     private void OnMouseDown()
     {
         if (turnHandler.TurnActive)
         {
+            if (!handRef.CheckCost(cost)) // reduce compounding 
+                return;  
+            
             if (minionSpawning)
             {
-                if (boardRef.PlaceforMinion())
+                if (boardRef.PlaceForMinion(true))
                 {
-                    for (int i = 0; i < minionCount; i++)
-                    {
-                        Minion templateMinion = minionRef;
-                        boardRef.AddMinion(templateMinion, true);
-                    }
-
+                    Minion templateMinion = minionRef;
+                    boardRef.AddMinion(templateMinion, health, strength, true);
+                    handRef.UpdateFunds(-cost);
                     handRef.RemoveCard(this);
-                    //Destroy(gameObject);
                 }
             }
         }
@@ -62,9 +51,10 @@ public class BaseCard : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+   public void UpdateTextFields()
     {
-        
+        healthText.text = health.ToString();
+        StrenghtText.text = strength.ToString();
+        CostText.text = cost.ToString();
     }
 }

@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
-public class Hand : MonoBehaviour
+public class Hand : MonoBehaviour // really this should be called player
 {
     public int maxCards = 7;
 
@@ -13,13 +14,22 @@ public class Hand : MonoBehaviour
     [SerializeField] private Board board;
     [SerializeField] private List<BaseCard> cardsInHand;
     [SerializeField] private CoreLoop TurnHandler;
+    [SerializeField] private PlayerCharacter PlayerCharacter;
+    private int PlayerFunds;
+    [SerializeField] private int BaseFunds;
+    [SerializeField] private Text FundDisplay;
     public Pile pile;
+
+    private GameObject AttackerRef;
+    private GameObject TargetRef;
     
     // Start is called before the first frame update
     void Start()
     {
         cardsInHand = new List<BaseCard>();
         Originpos = transform.position;
+        UpdateDisplay();
+        DrawCards();
     }
 
     void GetCardToHand()
@@ -39,27 +49,20 @@ public class Hand : MonoBehaviour
         Destroy(card.gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void CardPositions()
     {
-        
         //Debug.Log("Start loop");
         for (int i = 0; i < maxCards; i++)
         {
-            Debug.Log("uh");
             cardsInHand[i].gameObject.transform.localPosition = Originpos + OfsetPos * i;
             //CurrentHand[i].gameObject.GetComponent<RectTransform>().pivot = Originpos + OfsetPos;
             float x = Originpos.x + (OfsetPos.x * i);
-            cardsInHand[i].NewPos(x, 0);
+            //cardsInHand[i].NewPos(x, 0);
+            cardsInHand[i].UpdateTextFields();
         }
     }
 
-    private void FixedUpdate()
+    public void DrawCards()
     {
         if (cardsInHand.Count < maxCards)
         {
@@ -70,5 +73,53 @@ public class Hand : MonoBehaviour
             }
             CardPositions();
         }
+    }
+
+    private void UpdateDisplay()
+    {
+        FundDisplay.text = "Funds: " + PlayerFunds;
+    }
+
+    public bool CheckCost(int cost)
+    {
+        if (cost < PlayerFunds)
+        {
+            return true;
+        }
+        Debug.Log("poor lol");
+        return false;
+    }
+
+    public void UpdateFunds(int deltaFunds)
+    {
+        PlayerFunds += deltaFunds;
+        UpdateDisplay();
+    }
+    public void ResetFunds()
+    {
+        PlayerFunds = BaseFunds;
+        UpdateDisplay();
+    }
+    public void HandleAttack()
+    {
+        
+        if (AttackerRef != null && TargetRef != null)
+        {
+            AttackerRef.GetComponent<Minion>().Attack(TargetRef);
+            AttackerRef = null;
+            TargetRef = null;
+        }
+    }
+
+    public void setAttacker(GameObject attacker)
+    {
+        Debug.Log("Attacker set");
+        AttackerRef = attacker;
+    }
+    public void setTarget(GameObject target)
+    {
+        Debug.Log("Target Set");
+        TargetRef = target;
+        HandleAttack();
     }
 }

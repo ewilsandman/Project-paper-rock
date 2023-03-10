@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class CoreLoop : MonoBehaviour
 { // this is all local to the current player
     // public float playerNumber;
     public float timeLimit = 120; // seconds
-    public float _turnTime;
-    public float _turnsElapsed; // turns since start
+    public float turnTime;
+    public float turnsElapsed; // turns since start
     public bool TurnActive = false;
+    public Hand handRef;
 
+    [SerializeField] private Text turnTimer;
     [SerializeField] private PlayerCharacter playerCharacter;
     
     // Start is called before the first frame update
@@ -21,14 +24,22 @@ public class CoreLoop : MonoBehaviour
 
     void StartTurn()
     {
-        _turnTime = 0;
+        turnTime = 0;
         TurnActive = true;
+
+
+        if (turnsElapsed >0)
+        { 
+            handRef.DrawCards();
+        }
+        handRef.ResetFunds();
     }
 
-    void EndTurn() // this would in other player call start turn
+    public void EndTurn() // this would in other player call start turn (if other player was implemented)
     {
-        _turnsElapsed++;
+        turnsElapsed++;
         TurnActive = false;
+        StartTurn();
     }
 
     // Update is called once per frame
@@ -36,15 +47,18 @@ public class CoreLoop : MonoBehaviour
     {
         if (TurnActive)
         {
-            if (_turnTime > timeLimit)
+            if (turnTime > timeLimit)
             {
                 Debug.Log("Times up");
                 EndTurn();
             }
             else // gives you one extra frame but whatever
             {
-                _turnTime += Time.deltaTime;
+                turnTime += Time.deltaTime;
             }
+
+            float timeToDisplay = timeLimit - turnTime;
+            turnTimer.text = "Time left:" + timeToDisplay.ToString().Substring(0, 3);
         }
     }
 }
