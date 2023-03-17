@@ -93,17 +93,8 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         }
     }
 
-    public void RemoveMinon(GameObject target, bool friendly)
+    public void RemoveMinon(GameObject target)
     {
-        if (friendly) //whoops
-        {
-            PlayerMinions[Array.IndexOf(PlayerMinions, target)] = null; // does not work for some reason
-        }
-        else
-        {
-            Debug.Log(Array.IndexOf(HostileMinions,target)); // does not work for some reason
-            HostileMinions[Array.IndexOf(HostileMinions, target)] = null;
-        }
         Destroy(target);
     }
 

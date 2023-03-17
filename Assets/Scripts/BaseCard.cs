@@ -36,10 +36,10 @@ public class BaseCard : MonoBehaviour // particularly special cards will have ad
             
             if (minionSpawning)
             {
-                if (boardRef.PlaceForMinion(true))
+                if (boardRef.PlaceForMinion(handRef.Player1))
                 {
                     Minion templateMinion = minionRef;
-                    boardRef.AddMinion(templateMinion, health, strength, true);
+                    boardRef.AddMinion(templateMinion, health, strength, handRef.Player1);
                     handRef.UpdateFunds(-cost);
                     handRef.RemoveCard(this);
                 }

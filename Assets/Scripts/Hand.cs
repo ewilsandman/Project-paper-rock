@@ -20,6 +20,8 @@ public class Hand : MonoBehaviour // really this should be called player
     [SerializeField] private Text FundDisplay;
     public Pile pile;
 
+    public bool Player1;
+
     private GameObject AttackerRef;
     private GameObject TargetRef;
     

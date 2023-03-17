@@ -52,7 +52,7 @@ public class Minion : MonoBehaviour // will work similar to card
     private void Kill() // this would handle killing any "shadow" in multiplayer as well
     {
         Debug.Log("starting kill");
-        boardRef.RemoveMinon(gameObject, friendly);
+        boardRef.RemoveMinon(gameObject);
     }
 
     // Update is called once per frame

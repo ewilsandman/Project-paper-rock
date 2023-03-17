@@ -12,6 +12,7 @@ public class CoreLoop : MonoBehaviour
     public float turnsElapsed; // turns since start
     public bool TurnActive = false;
     public Hand handRef;
+    public CoreLoop OtherPlayer;
 
     [SerializeField] private Text turnTimer;
     [SerializeField] private PlayerCharacter playerCharacter;
@@ -19,15 +20,13 @@ public class CoreLoop : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartTurn(); // temp workaround
+        //StartTurn(); // temp workaround
     }
 
     void StartTurn()
     {
         turnTime = 0;
         TurnActive = true;
-
-
         if (turnsElapsed >0)
         { 
             handRef.DrawCards();
@@ -35,11 +34,11 @@ public class CoreLoop : MonoBehaviour
         handRef.ResetFunds();
     }
 
-    public void EndTurn() // this would in other player call start turn (if other player was implemented)
+    public void EndTurn()
     {
         turnsElapsed++;
         TurnActive = false;
-        StartTurn();
+        OtherPlayer.StartTurn();
     }
 
     // Update is called once per frame
@@ -58,7 +57,7 @@ public class CoreLoop : MonoBehaviour
             }
 
             float timeToDisplay = timeLimit - turnTime;
-            turnTimer.text = "Time left:" + timeToDisplay.ToString().Substring(0, 3);
+            turnTimer.text = "Time left:" + timeToDisplay.ToString().Substring(0, 2);
         }
     }
 }
