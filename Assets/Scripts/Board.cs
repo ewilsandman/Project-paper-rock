@@ -3,17 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Board : MonoBehaviour // this will handle enemy attacks
 {
     [SerializeField] private int maxMinions = 5;
 
-    [SerializeField] private CoreLoop CoreLoop;
-    [SerializeField] private Hand playerHand; //TODO: will need to be swapped when player swap
-    
+    [FormerlySerializedAs("CoreLoop1Ref")] [SerializeField] private CoreLoop CurrentLoopRef; // active player
+    [FormerlySerializedAs("CoreLoop2Ref")] [SerializeField] private CoreLoop OtherLoopRef; // inactive player
+    [SerializeField] private Hand player1Hand;
+    [SerializeField] private Hand player2Hand;
+
+    private GameObject _targetRef;
+    private GameObject _attackerRef;
+
     public Minion[] PlayerMinions;
+    public Transform playerMinionPositions; // cursed way of doing things
     public Minion[] HostileMinions;
+    public Transform hostileMinionPositions;
     private Vector3 Originpos;
+    
     [SerializeField] private Vector3 OffsetPos;
     [SerializeField] private Vector3 HostileOffset;
     [SerializeField] private Minion HostileMinionExample;
@@ -25,13 +34,33 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         HostileMinions = new Minion[maxMinions];
     }
 
+    public void AddAttacker(GameObject input)
+    {
+        _attackerRef = input;
+        HandleAttack();
+    }
+    public void AddTarget(GameObject input)
+    {
+        _targetRef = input;
+        HandleAttack();
+    }
+
+    private void HandleAttack()
+    {
+        if (_targetRef != null & _attackerRef != null)
+        {
+            _attackerRef.GetComponent<Minion>().Attack(_targetRef);
+            _attackerRef = null;
+            _targetRef = null;
+        }
+    }
+
     public bool PlaceForMinion(bool friendly) 
     {
         for (int i = 0; i < maxMinions; i++)
         {
             if (friendly)
             {
-
                 if (!PlayerMinions[i])
                 {
                     Debug.Log("Place found!");
@@ -52,21 +81,20 @@ public class Board : MonoBehaviour // this will handle enemy attacks
 
     public void AddMinion(Minion template, int health, int strength, bool friendly) // could be remade to handle multiple spawns
     {
+        Minion toBeCreated = Instantiate(template, transform.parent);
+        toBeCreated.health = health;
+        toBeCreated.strength = strength;
+        toBeCreated.boardRef = this;
+        toBeCreated.turnHandler = CurrentLoopRef;
+        toBeCreated.playerHand = player1Hand;
         if (friendly)
         {
             for (int i = 0; i < maxMinions; i++)
             {
                 if (!PlayerMinions[i])
                 {
-                    Minion toBeCreated = Instantiate(template, transform.parent);
                     PlayerMinions[i] = toBeCreated;
-                    toBeCreated.gameObject.transform.localPosition = transform.parent.position + -HostileOffset + OffsetPos * i;
-                    toBeCreated.health = health;
-                    toBeCreated.strength = strength;
-                    toBeCreated.boardRef = this;
-                    toBeCreated.turnHandler = CoreLoop;
-                    toBeCreated.playerHand = playerHand;
-                    toBeCreated.friendly = true;
+                    toBeCreated.gameObject.transform.position = playerMinionPositions.GetChild(i).position;
                     break;
                 }
             }
@@ -77,15 +105,8 @@ public class Board : MonoBehaviour // this will handle enemy attacks
             {
                 if (!HostileMinions[i])
                 {
-                    Minion toBeCreated = Instantiate(template, transform.parent);
                     HostileMinions[i] = toBeCreated;
-                    toBeCreated.gameObject.transform.localPosition = transform.parent.position + HostileOffset + OffsetPos * i;
-                    toBeCreated.health = health;
-                    toBeCreated.strength = strength;
-                    toBeCreated.boardRef = this;
-                    toBeCreated.turnHandler = CoreLoop;
-                    toBeCreated.playerHand = playerHand;
-                    toBeCreated.friendly = false;
+                    toBeCreated.gameObject.transform.position = hostileMinionPositions.GetChild(i).position;
                     break;
                 }
             }
@@ -106,16 +127,30 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         }
     }
 
-    public void SpawnWeakExampleEnemy()// debug purposes 
+    public void SwapMinons()
     {
-        if (PlaceForMinion(false))
+        Minion[] tempMinions = new Minion[maxMinions];
+        tempMinions = PlayerMinions;
+        PlayerMinions = HostileMinions;
+        HostileMinions = tempMinions;
+        
+        for (int i = 0; i < maxMinions; i++)
         {
-            AddMinion(HostileMinionExample, 1, 1, false);
+            if (PlayerMinions[i])
+            {
+                PlayerMinions[i].transform.position = playerMinionPositions.GetChild(i).position;
+                PlayerMinions[i].ResetAttack();
+                //PlayerMinions[i].turnHandler = CoreLoop2Ref;
+            }
+            if (HostileMinions[i])
+            {
+                HostileMinions[i].transform.position = hostileMinionPositions.GetChild(i).position;
+                HostileMinions[i].ResetAttack();
+                //HostileMinions[i].turnHandler = CoreLoop1Ref;
+            }
         }
-    }
 
-    public void DestroyMinion()
-    {
-        throw new NotImplementedException();
+        (CurrentLoopRef, OtherLoopRef) = (OtherLoopRef, CurrentLoopRef); 
+        (player1Hand, player2Hand) = (player2Hand, player1Hand);// conditional on gamemode
     }
 }

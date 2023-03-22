@@ -7,30 +7,28 @@ using UnityEngine.UI;
 
 public class Hand : MonoBehaviour // really this should be called player
 {
-    public int maxCards = 7;
+    public int maxCards;
 
     private Vector3 Originpos;
     [SerializeField] private Vector3 OfsetPos;
     [SerializeField] private Board board;
+    [SerializeField] private Hand otherHand;
     [SerializeField] private List<BaseCard> cardsInHand;
     [SerializeField] private CoreLoop TurnHandler;
     [SerializeField] private PlayerCharacter PlayerCharacter;
+    
     private int PlayerFunds;
     [SerializeField] private int BaseFunds;
-    [SerializeField] private Text FundDisplay;
     public Pile pile;
 
-    public bool Player1;
-
-    private GameObject AttackerRef;
-    private GameObject TargetRef;
+    public bool Friendly;
+    
     
     // Start is called before the first frame update
     void Start()
     {
         cardsInHand = new List<BaseCard>();
         Originpos = transform.position;
-        UpdateDisplay();
         DrawCards();
     }
 
@@ -54,13 +52,13 @@ public class Hand : MonoBehaviour // really this should be called player
     void CardPositions()
     {
         //Debug.Log("Start loop");
-        for (int i = 0; i < maxCards; i++)
+        for (int i = 0; i < cardsInHand.Count; i++)
         {
-            cardsInHand[i].gameObject.transform.localPosition = Originpos + OfsetPos * i;
-            //CurrentHand[i].gameObject.GetComponent<RectTransform>().pivot = Originpos + OfsetPos;
-            float x = Originpos.x + (OfsetPos.x * i);
-            //cardsInHand[i].NewPos(x, 0);
-            cardsInHand[i].UpdateTextFields();
+            if (cardsInHand[i])
+            {
+                cardsInHand[i].gameObject.transform.position = transform.GetChild(i).position;
+                cardsInHand[i].UpdateTextFields(); 
+            }
         }
     }
 
@@ -76,12 +74,7 @@ public class Hand : MonoBehaviour // really this should be called player
             CardPositions();
         }
     }
-
-    private void UpdateDisplay()
-    {
-        FundDisplay.text = "Funds: " + PlayerFunds;
-    }
-
+    
     public bool CheckCost(int cost)
     {
         if (cost < PlayerFunds)
@@ -95,33 +88,19 @@ public class Hand : MonoBehaviour // really this should be called player
     public void UpdateFunds(int deltaFunds)
     {
         PlayerFunds += deltaFunds;
-        UpdateDisplay();
     }
     public void ResetFunds()
     {
         PlayerFunds = BaseFunds;
-        UpdateDisplay();
-    }
-    public void HandleAttack()
-    {
-        
-        if (AttackerRef != null && TargetRef != null)
-        {
-            AttackerRef.GetComponent<Minion>().Attack(TargetRef);
-            AttackerRef = null;
-            TargetRef = null;
-        }
     }
 
-    public void setAttacker(GameObject attacker)
+    public void swapHand() // done by active player before turn swaps
     {
-        Debug.Log("Attacker set");
-        AttackerRef = attacker;
-    }
-    public void setTarget(GameObject target)
-    {
-        Debug.Log("Target Set");
-        TargetRef = target;
-        HandleAttack();
+        otherHand.Friendly = true;
+        (cardsInHand, otherHand.cardsInHand) = (otherHand.cardsInHand, cardsInHand); // no Idea how this works
+        otherHand.CardPositions();
+        Friendly = false;
+        CardPositions();
+        
     }
 }

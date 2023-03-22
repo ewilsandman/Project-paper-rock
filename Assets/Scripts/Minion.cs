@@ -1,16 +1,31 @@
-using System;
-using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Minion : MonoBehaviour // will work similar to card
 {
-    public bool friendly = false;
+    //public bool friendly = false; // shit
     public CoreLoop turnHandler;
+
+    private bool _attackedThisTurn;
 
     public Board boardRef;
     public Hand playerHand;
     public int health;
     public int strength;
+    
+    [SerializeField] public Text healthText;
+    [SerializeField] public Text strengthText;
+
+    private void Start()
+    {
+        UpdateTextFields();
+        ResetAttack();
+    }
+
+    public void ResetAttack()
+    {
+        _attackedThisTurn = false;
+    }
 
     // private Hand playerHand;
     // Start is called before the first frame update
@@ -18,13 +33,13 @@ public class Minion : MonoBehaviour // will work similar to card
     {
         if (turnHandler.TurnActive)
         {
-            if (friendly)
+            if (playerHand.Friendly)
             {
-                playerHand.setAttacker(gameObject);
+                boardRef.AddAttacker(gameObject);
             }
             else
             {
-                playerHand.setTarget(gameObject);
+                boardRef.AddTarget(gameObject);
             }
         } 
     }
@@ -39,14 +54,29 @@ public class Minion : MonoBehaviour // will work similar to card
         {
             health += delta;
         }
+        UpdateTextFields();
     }
 
     public void Attack(GameObject target)
     {
+        if (_attackedThisTurn)
+        {
+            return;
+        }
         Debug.Log("attack done");
-        Minion targetScript = target.GetComponent<Minion>();
-        targetScript.DeltaHealth(-strength);
-        DeltaHealth(-targetScript.strength);
+        Minion MiniontargetScript;
+        PlayerCharacter PlayerTargetScript;
+        if (target.TryGetComponent<Minion>(out MiniontargetScript)) // this could be solved by having a more general "healthComponent"
+        {
+            MiniontargetScript.DeltaHealth(-strength);
+            DeltaHealth(-MiniontargetScript.strength);
+        }
+        else if (target.TryGetComponent<PlayerCharacter>(out PlayerTargetScript))
+        {
+            PlayerTargetScript.DeltaHealth(-strength);
+        }
+
+        _attackedThisTurn = true;
     }
 
     private void Kill() // this would handle killing any "shadow" in multiplayer as well
@@ -54,9 +84,9 @@ public class Minion : MonoBehaviour // will work similar to card
         Debug.Log("starting kill");
         boardRef.RemoveMinon(gameObject);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
+    private void UpdateTextFields()
+    {   
+        healthText.text = health.ToString();
+        strengthText.text = strength.ToString();
     }
 }
