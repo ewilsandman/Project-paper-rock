@@ -1,46 +1,49 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class Hand : MonoBehaviour // really this should be called player
 {
     public int maxCards;
 
-    private Vector3 Originpos;
-    [SerializeField] private Vector3 OfsetPos;
+
     [SerializeField] private Board board;
     [SerializeField] private Hand otherHand;
     [SerializeField] private List<BaseCard> cardsInHand;
-    [SerializeField] private CoreLoop TurnHandler;
-    [SerializeField] private PlayerCharacter PlayerCharacter;
+    [SerializeField] private PlayerCharacter playerCharacter;
+    [FormerlySerializedAs("TurnHandler")] [SerializeField] private CoreLoop turnHandler;
     
-    private int PlayerFunds;
-    [SerializeField] private int BaseFunds;
+    private int _playerFunds;
+    [FormerlySerializedAs("BaseFunds")] [SerializeField] private int baseFunds;
     public Pile pile;
 
-    public bool Friendly;
+    [FormerlySerializedAs("Friendly")] public bool friendly;
     
     
     // Start is called before the first frame update
     void Start()
     {
         cardsInHand = new List<BaseCard>();
-        Originpos = transform.position;
         DrawCards();
     }
 
     void GetCardToHand()
     {
         BaseCard template = pile.PileToHand();
-        BaseCard toBeAdded = Instantiate(template, transform);
-        toBeAdded.handRef = this;
-        toBeAdded.boardRef = board;
-        toBeAdded.turnHandler = TurnHandler;
-        Debug.Log("Card added: " + toBeAdded.name);
-        cardsInHand.Add(toBeAdded);
+        if (template == null)
+        {
+            
+        }
+        else
+        {        
+            BaseCard toBeAdded = Instantiate(template, transform);
+            toBeAdded.handRef = this;
+            toBeAdded.boardRef = board;
+            toBeAdded.turnHandler = turnHandler;
+            Debug.Log("Card added: " + toBeAdded.name);
+            cardsInHand.Add(toBeAdded);
+        }
+
     }
 
     public void RemoveCard(BaseCard card)
@@ -64,7 +67,7 @@ public class Hand : MonoBehaviour // really this should be called player
 
     public void DrawCards()
     {
-        if (cardsInHand.Count < maxCards)
+        if (cardsInHand.Count < maxCards) // TODO: change to limit pickups
         {
             Debug.Log("Getting cards");
             for (int i = cardsInHand.Count; i < maxCards; i++)
@@ -77,29 +80,35 @@ public class Hand : MonoBehaviour // really this should be called player
     
     public bool CheckCost(int cost)
     {
-        if (cost < PlayerFunds)
+        if (cost <= _playerFunds)
         {
             return true;
         }
-        Debug.Log("poor lol");
-        return false;
+        else
+        {
+            return false;
+        }
     }
 
     public void UpdateFunds(int deltaFunds)
     {
-        PlayerFunds += deltaFunds;
+        _playerFunds += deltaFunds;
+        playerCharacter.deployPoints = _playerFunds;
+        playerCharacter.UpdateTextFields();
     }
     public void ResetFunds()
     {
-        PlayerFunds = BaseFunds;
+        _playerFunds = baseFunds;
+        playerCharacter.deployPoints = _playerFunds;
+        playerCharacter.UpdateTextFields();
     }
 
-    public void swapHand() // done by active player before turn swaps
+    public void SwapHand() // done by active player before turn swaps
     {
-        otherHand.Friendly = true;
+        otherHand.friendly = true;
         (cardsInHand, otherHand.cardsInHand) = (otherHand.cardsInHand, cardsInHand); // no Idea how this works
         otherHand.CardPositions();
-        Friendly = false;
+        friendly = false;
         CardPositions();
         
     }

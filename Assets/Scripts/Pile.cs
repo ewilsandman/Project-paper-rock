@@ -4,19 +4,11 @@ using UnityEngine;
 
 public class Pile : MonoBehaviour
 {
-    [SerializeField] private List<BaseCard> possibleCards; // will probably make a system to customize deck later
+    [SerializeField] private List<BaseCard> possibleCards; //TODO: make a system to customize deck
     private List<BaseCard> _pileCards;
     private bool PileCreated = false;
     private int maxPile = 30;
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (!PileCreated)
-        {
-           // CreatePile();
-        }
-    }
-
+    
     void CreatePile()
     {
         _pileCards = new List<BaseCard>();
@@ -28,14 +20,35 @@ public class Pile : MonoBehaviour
         PileCreated = true;
     }
 
+    public int cardsLeft()
+    {
+        if (PileCreated)
+        {
+            return _pileCards.Count;
+        }
+        else
+        {
+            return maxPile;
+        }
+ 
+    }
+
     public BaseCard PileToHand()
     {
         if (!PileCreated)
         {
             CreatePile();
         }
-        BaseCard cardToGive = _pileCards[Random.Range(0, possibleCards.Count)];
-        _pileCards.Remove(cardToGive);
-        return cardToGive;
+
+        if (_pileCards.Count < 1)
+        {
+            return null;
+        }
+        else
+        {
+            BaseCard cardToGive = _pileCards[0];
+            _pileCards.Remove(cardToGive);
+            return cardToGive;
+        }
     }
 }

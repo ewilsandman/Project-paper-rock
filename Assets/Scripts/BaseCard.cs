@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BaseCard : MonoBehaviour // particularly special cards will have additional scripts and tags
@@ -12,16 +9,17 @@ public class BaseCard : MonoBehaviour // particularly special cards will have ad
     public int cost;
     public bool minionSpawning;
     public Minion minionRef;
-    public int minionCount; // currently unused
     public Hand handRef;
     public Board boardRef;
+    public string minionName;
 
-    [SerializeField] public Text healthText;
-    [SerializeField] public Text StrenghtText;
-    [SerializeField] public Text CostText;
-    
+    [SerializeField] private Text healthText;
+    [SerializeField] private Text strenghtText;
+    [SerializeField] private Text costText;
+    [SerializeField] private Text nameText;
 
-     public int health; // these could change in hand
+
+    public int health; // these could change in hand
     public int strength; //
 
     private void OnMouseOver() // TODO:visualize that player can/cant deploy card
@@ -29,17 +27,17 @@ public class BaseCard : MonoBehaviour // particularly special cards will have ad
 
     private void OnMouseDown()
     {
-        if (turnHandler.TurnActive)
+        if (turnHandler.turnActive)
         {
             if (!handRef.CheckCost(cost)) // reduce compounding 
                 return;  
             
             if (minionSpawning)
             {
-                if (boardRef.PlaceForMinion(handRef.Friendly))
+                if (boardRef.PlaceForMinion(handRef.friendly))
                 {
                     Minion templateMinion = minionRef;
-                    boardRef.AddMinion(templateMinion, health, strength, handRef.Friendly);
+                    boardRef.AddMinion(templateMinion, health, strength, minionName, handRef.friendly);
                     handRef.UpdateFunds(-cost);
                     handRef.RemoveCard(this);
                 }
@@ -54,7 +52,8 @@ public class BaseCard : MonoBehaviour // particularly special cards will have ad
    public void UpdateTextFields()
     {
         healthText.text = health.ToString();
-        StrenghtText.text = strength.ToString();
-        CostText.text = cost.ToString();
+        strenghtText.text = strength.ToString();
+        costText.text = cost.ToString();
+        nameText.text = minionName;
     }
 }

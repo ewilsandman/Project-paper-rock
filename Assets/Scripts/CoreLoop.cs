@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -8,42 +6,43 @@ public class CoreLoop : MonoBehaviour
 {
     // this is all local to the current player
     // public float playerNumber;
-    [SerializeField] private float TimeToChange;
+    [FormerlySerializedAs("TimeToChange")] [SerializeField] private float timeToChange;
     public float timeLimit = 120; // seconds
     public float turnTime; // time turn has elapsed, counts up
 
     public float turnsElapsed; // turns since start
-    public bool TurnActive = false;
-    private bool WaitingToSwap;
+    [FormerlySerializedAs("TurnActive")] public bool turnActive;
+    private bool _waitingToSwap;
     [SerializeField] private Hand handRef;
-    [SerializeField] private CoreLoop OtherPlayer;
+    [FormerlySerializedAs("OtherPlayer")] [SerializeField] private CoreLoop otherPlayer;
 
     [SerializeField] private Board boardRef;
     [SerializeField] private Text turnTimer;
-    [SerializeField] private PlayerCharacter playerCharacter;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        //StartTurn(); // temp workaround
-    }
+    [SerializeField] private PlayerCharacter playerChar;
+    [SerializeField] private PlayerCharacter hostileChar;
+
+    [FormerlySerializedAs("BlueBackground")] [SerializeField] private GameObject blueBackground;
+    [FormerlySerializedAs("OrangeBackground")] [SerializeField] private GameObject orangeBackground;
+    [SerializeField] private GameObject blocker;
 
     public void StartTurn()
     {
         Debug.Log("now player" + gameObject.name);
         turnTime = 0;
-        TurnActive = true;
+        turnActive = true;
         if (turnsElapsed >0)
         { 
             handRef.DrawCards();
         }
         handRef.ResetFunds();
+        blocker.SetActive(false);
     }
 
-    private void EndTurn()
+    public void EndTurn()
     {
+        turnTime = 0;
         turnsElapsed++;
-        TurnActive = false;
+        turnActive = false;
         StartSwap();
          //OtherPlayer.StartTurn();
     }
@@ -51,11 +50,10 @@ public class CoreLoop : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (TurnActive)
+        if (turnActive)
         {
             if (turnTime > timeLimit)
             {
-                turnTime = 0;
                 Debug.Log("Times up");
                 EndTurn();
             }
@@ -71,20 +69,20 @@ public class CoreLoop : MonoBehaviour
             }
             turnTimer.text = "Time left:" + timeToDisplay.ToString();
         }
-        else if (WaitingToSwap)
+        else if (_waitingToSwap)
         {
-            if (turnTime > TimeToChange)
+            if (turnTime > timeToChange)
             {
                 turnTime = 0;
                 SwapPlayers();
-                WaitingToSwap = false;
+                _waitingToSwap = false;
             }
             else
             {
                 turnTime += Time.deltaTime;
             }
             
-            float timeToDisplay = TimeToChange - turnTime;
+            float timeToDisplay = timeToChange - turnTime;
             if (timeToDisplay.ToString().Length > 1)
             {
                 turnTimer.text = "Changing in:" + timeToDisplay.ToString().Substring(0, 2);
@@ -93,17 +91,28 @@ public class CoreLoop : MonoBehaviour
         }
     }
 
+    void ToggleGameMode() // changes between hot seat and PvE
+    {
+        
+    }
+
     void StartSwap()
     {
-        WaitingToSwap = true;
+        (blueBackground.GetComponent<Image>().color, orangeBackground.GetComponent<Image>().color) = 
+            (orangeBackground.GetComponent<Image>().color, blueBackground.GetComponent<Image>().color);
+
+        blocker.SetActive(true);
+        
+        _waitingToSwap = true;
     }
 
     void SwapPlayers()
     {
         Debug.Log("swapping players");
         // needs if statement based on game mode
-        handRef.swapHand();
+        playerChar.SwapSides(hostileChar);
+        handRef.SwapHand();
         boardRef.SwapMinons();
-        OtherPlayer.StartTurn();
+        otherPlayer.StartTurn();
     }
 }

@@ -1,20 +1,17 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using UnityEditor.Rendering.HighDefinition;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    [SerializeField]private uint _deployPoints; // never negative
+    public int deployPoints; // never negative
     public int health;
     public bool friendly;
     [SerializeField] private Text deployPointDisplay;
     [SerializeField] private Text healthPointDisplay;
     [SerializeField] private Text pileCardsDisplay; // unused
-    [SerializeField] private Board _board;
+    [SerializeField] private Pile _pile;
+    [FormerlySerializedAs("_board")] [SerializeField] private Board board;
     [SerializeField] private Hand hand;
     [SerializeField] private CoreLoop loop;
 
@@ -28,7 +25,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (!friendly) // friendly status needs to change with the "active turn system"
         {
-            _board.AddTarget(gameObject);
+            board.AddTarget(gameObject);
         }
     }
 
@@ -46,15 +43,18 @@ public class PlayerCharacter : MonoBehaviour
         UpdateTextFields();
     }
 
-    private void FixedUpdate()
+    public void SwapSides(PlayerCharacter otherChar)
     {
-      /*  float toDisplay = _deployPoints;
-        _display.text = toDisplay.ToString(CultureInfo.InvariantCulture);*/
+        (transform.position, otherChar.transform.position) = 
+            (otherChar.transform.position, transform.position);
+        friendly = false;
+        otherChar.friendly = true;
     }
 
     public void UpdateTextFields()
     {
-        deployPointDisplay.text = "Funds: " + _deployPoints;
+        deployPointDisplay.text = "Funds: " + deployPoints;
         healthPointDisplay.text = "Health: " + health;
+        pileCardsDisplay.text = "Cards: " + _pile.cardsLeft();
     }
 }

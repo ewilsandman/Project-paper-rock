@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class Minion : MonoBehaviour // will work similar to card
 {
-    //public bool friendly = false; // shit
     public CoreLoop turnHandler;
 
     private bool _attackedThisTurn;
@@ -12,9 +11,11 @@ public class Minion : MonoBehaviour // will work similar to card
     public Hand playerHand;
     public int health;
     public int strength;
+    public string minionName;
     
     [SerializeField] public Text healthText;
     [SerializeField] public Text strengthText;
+    [SerializeField] public Text nameText;
 
     private void Start()
     {
@@ -31,17 +32,15 @@ public class Minion : MonoBehaviour // will work similar to card
     // Start is called before the first frame update
     public void ButtonResponse()
     {
-        if (turnHandler.TurnActive)
+        if (playerHand.friendly)
+        { 
+            boardRef.AddAttacker(gameObject);
+        }
+        else
         {
-            if (playerHand.Friendly)
-            {
-                boardRef.AddAttacker(gameObject);
-            }
-            else
-            {
-                boardRef.AddTarget(gameObject);
-            }
-        } 
+            boardRef.AddTarget(gameObject);
+        }
+       
     }
 
     public void DeltaHealth(int delta)
@@ -64,16 +63,16 @@ public class Minion : MonoBehaviour // will work similar to card
             return;
         }
         Debug.Log("attack done");
-        Minion MiniontargetScript;
-        PlayerCharacter PlayerTargetScript;
-        if (target.TryGetComponent<Minion>(out MiniontargetScript)) // this could be solved by having a more general "healthComponent"
+        Minion miniontargetScript;
+        PlayerCharacter playerTargetScript;
+        if (target.TryGetComponent(out miniontargetScript)) // this could be solved by having a more general "healthComponent"
         {
-            MiniontargetScript.DeltaHealth(-strength);
-            DeltaHealth(-MiniontargetScript.strength);
+            miniontargetScript.DeltaHealth(-strength);
+            DeltaHealth(-miniontargetScript.strength);
         }
-        else if (target.TryGetComponent<PlayerCharacter>(out PlayerTargetScript))
+        else if (target.TryGetComponent(out playerTargetScript))
         {
-            PlayerTargetScript.DeltaHealth(-strength);
+            playerTargetScript.DeltaHealth(-strength);
         }
 
         _attackedThisTurn = true;
@@ -88,5 +87,6 @@ public class Minion : MonoBehaviour // will work similar to card
     {   
         healthText.text = health.ToString();
         strengthText.text = strength.ToString();
+        nameText.text = minionName; // unlikely to change
     }
 }

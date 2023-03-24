@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 539373840}
   - component: {fileID: 539373841}
   m_Layer: 0
-  m_Name: BasicMinionCard 2
+  m_Name: BiggerMinionCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,17 +59,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnHandler: {fileID: 0}
-  cost: 2
+  cost: 3
   minionSpawning: 1
   minionRef: {fileID: 2303190162502371044, guid: b9bddd2e488c4cf48b68d6b33f0bb783,
     type: 3}
-  minionCount: 1
   handRef: {fileID: 0}
   boardRef: {fileID: 0}
+  minionName: Bigger Minion
   healthText: {fileID: 8486798630456097218}
-  StrenghtText: {fileID: 2868405335417673551}
-  CostText: {fileID: 1109390692459822522}
-  health: 2
+  strenghtText: {fileID: 2868405335417673551}
+  costText: {fileID: 1109390692459822522}
+  nameText: {fileID: 8351777357033114803}
+  health: 4
   strength: 3
 --- !u!222 &2116517198080980426
 CanvasRenderer:
@@ -377,7 +378,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Title
+  m_Text: Big boi
 --- !u!1 &4952927558037804297
 GameObject:
   m_ObjectHideFlags: 0
