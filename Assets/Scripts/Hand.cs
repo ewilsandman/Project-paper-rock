@@ -9,13 +9,13 @@ public class Hand : MonoBehaviour // really this should be called player
 
     [SerializeField] private Board board;
     [SerializeField] private Hand otherHand;
-    [SerializeField] private List<BaseCard> cardsInHand;
     [SerializeField] private PlayerCharacter playerCharacter;
     [FormerlySerializedAs("TurnHandler")] [SerializeField] private CoreLoop turnHandler;
     
-    private int _playerFunds;
+    [FormerlySerializedAs("_playerFunds")] public int playerFunds;
     [FormerlySerializedAs("BaseFunds")] [SerializeField] private int baseFunds;
     public Pile pile;
+    public List<BaseCard> cardsInHand;
 
     [FormerlySerializedAs("Friendly")] public bool friendly;
     
@@ -78,28 +78,17 @@ public class Hand : MonoBehaviour // really this should be called player
         }
     }
     
-    public bool CheckCost(int cost)
-    {
-        if (cost <= _playerFunds)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
     public void UpdateFunds(int deltaFunds)
     {
-        _playerFunds += deltaFunds;
-        playerCharacter.deployPoints = _playerFunds;
+        playerFunds += deltaFunds;
+        playerCharacter.deployPoints = playerFunds;
         playerCharacter.UpdateTextFields();
     }
     public void ResetFunds()
     {
-        _playerFunds = baseFunds;
-        playerCharacter.deployPoints = _playerFunds;
+        playerFunds = baseFunds;
+        playerCharacter.deployPoints = playerFunds;
         playerCharacter.UpdateTextFields();
     }
 

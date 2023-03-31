@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -12,8 +13,6 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private Text pileCardsDisplay; // unused
     [SerializeField] private Pile _pile;
     [FormerlySerializedAs("_board")] [SerializeField] private Board board;
-    [SerializeField] private Hand hand;
-    [SerializeField] private CoreLoop loop;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +33,7 @@ public class PlayerCharacter : MonoBehaviour
         if (health + delta < 0)
         {
             Debug.Log("ono I am kill" + transform.name);
+            SceneManager.LoadScene(2);
             // die and mark other player victory
         }
         else

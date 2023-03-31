@@ -6,7 +6,7 @@ public class BaseCard : MonoBehaviour // particularly special cards will have ad
 {
     public CoreLoop turnHandler;
     
-    public int cost;
+    [FormerlySerializedAs("_cost")] public int cost;
     public bool minionSpawning;
     public Minion minionRef;
     public Hand handRef;
@@ -23,13 +23,42 @@ public class BaseCard : MonoBehaviour // particularly special cards will have ad
     public int strength; //
 
     private void OnMouseOver() // TODO:visualize that player can/cant deploy card
-    { }
+    {
+       /* if ()
+        {
+            
+        }*/
+    }
 
-    private void OnMouseDown()
+    public bool CheckCost(int available)
+    {
+        if (available >= cost)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+   /* public void AiAction()
+    {
+        if (minionSpawning)
+        {
+            if (boardRef.PlaceForMinion(handRef.friendly))
+            {
+                Minion templateMinion = minionRef;
+                boardRef.AddMinion(templateMinion, health, strength, minionName, handRef.friendly);
+                handRef.UpdateFunds(-cost);
+                handRef.RemoveCard(this);
+            }
+        }
+    }*/
+
+    public void OnMouseDown()
     {
         if (turnHandler.turnActive)
         {
-            if (!handRef.CheckCost(cost)) // reduce compounding 
+            if (!CheckCost(cost)) // reduce compounding 
                 return;  
             
             if (minionSpawning)
@@ -42,10 +71,6 @@ public class BaseCard : MonoBehaviour // particularly special cards will have ad
                     handRef.RemoveCard(this);
                 }
             }
-        }
-        else
-        {
-            Debug.Log("Wait for your turn");
         }
     }
 

@@ -1,11 +1,12 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Minion : MonoBehaviour // will work similar to card
 {
     public CoreLoop turnHandler;
 
-    private bool _attackedThisTurn;
+    public bool attackedThisTurn = false;
 
     public Board boardRef;
     public Hand playerHand;
@@ -25,7 +26,7 @@ public class Minion : MonoBehaviour // will work similar to card
 
     public void ResetAttack()
     {
-        _attackedThisTurn = false;
+        attackedThisTurn = false;
     }
 
     // private Hand playerHand;
@@ -58,7 +59,7 @@ public class Minion : MonoBehaviour // will work similar to card
 
     public void Attack(GameObject target)
     {
-        if (_attackedThisTurn)
+        if (attackedThisTurn)
         {
             return;
         }
@@ -75,7 +76,7 @@ public class Minion : MonoBehaviour // will work similar to card
             playerTargetScript.DeltaHealth(-strength);
         }
 
-        _attackedThisTurn = true;
+        attackedThisTurn = true;
     }
 
     private void Kill() // this would handle killing any "shadow" in multiplayer as well

@@ -19,8 +19,8 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     public Transform hostileMinionPositions;
     //private Vector3 _originpos;
     
-    [FormerlySerializedAs("OffsetPos")] [SerializeField] private Vector3 offsetPos;
-    [FormerlySerializedAs("HostileOffset")] [SerializeField] private Vector3 hostileOffset;
+   /* [FormerlySerializedAs("OffsetPos")] [SerializeField] private Vector3 offsetPos;
+    [FormerlySerializedAs("HostileOffset")] [SerializeField] private Vector3 hostileOffset;*/
     [FormerlySerializedAs("HostileMinionExample")] [SerializeField] private Minion hostileMinionExample;
     
     // Start is called before the first frame update
@@ -153,5 +153,27 @@ public class Board : MonoBehaviour // this will handle enemy attacks
 
         (currentLoopRef, otherLoopRef) = (otherLoopRef, currentLoopRef); 
         (player1Hand, player2Hand) = (player2Hand, player1Hand);// conditional on gamemode
+    }
+
+    public void MultiplayerSwap()
+    {
+        Minion[] tempMinions = new Minion[maxMinions];
+        tempMinions = playerMinions;
+        playerMinions = hostileMinions;
+        hostileMinions = tempMinions;
+
+        for (int i = 0; i < maxMinions; i++)
+        {
+            if (playerMinions[i])
+            {
+                playerMinions[i].ResetAttack();
+            }
+            if (hostileMinions[i])
+            {
+                hostileMinions[i].ResetAttack();
+            }
+        }
+        
+        (currentLoopRef, otherLoopRef) = (otherLoopRef, currentLoopRef); 
     }
 }

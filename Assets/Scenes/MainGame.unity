@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2159.337, g: 2264.8809, b: 3292.5977, a: 1}
+  m_IndirectSpecularColor: {r: 2158.3652, g: 2260.5703, b: 3278.4492, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -154,7 +154,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2046492096}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -955,9 +955,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}
+      propertyPath: aiRef
+      value: 
+      objectReference: {fileID: 685009629}
+    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
+        type: 3}
       propertyPath: blocker
       value: 
       objectReference: {fileID: 1178607574}
+    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
+        type: 3}
+      propertyPath: aiPlayer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}
       propertyPath: boardRef
@@ -1218,6 +1228,50 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &685009627
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 685009628}
+  - component: {fileID: 685009629}
+  m_Layer: 0
+  m_Name: AIObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &685009628
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685009627}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 50.840004, y: -36.368595, z: 61.310974}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &685009629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685009627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1c46a7b44f35c45a9e8546f5c6c968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &711099740
 GameObject:
   m_ObjectHideFlags: 0
@@ -1938,8 +1992,6 @@ MonoBehaviour:
   playerMinionPositions: {fileID: 1503603556}
   hostileMinions: []
   hostileMinionPositions: {fileID: 16836159}
-  offsetPos: {x: 100, y: 0, z: 0}
-  hostileOffset: {x: 0, y: 100, z: 0}
   hostileMinionExample: {fileID: 2303190162502371044, guid: b9bddd2e488c4cf48b68d6b33f0bb783,
     type: 3}
 --- !u!1 &1359745355
@@ -2449,8 +2501,6 @@ MonoBehaviour:
   pileCardsDisplay: {fileID: 1896882935}
   _pile: {fileID: 788043387}
   board: {fileID: 1283085366}
-  hand: {fileID: 609989576}
-  loop: {fileID: 609989575}
 --- !u!114 &1613275507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3168,8 +3218,8 @@ RectTransform:
   - {fileID: 1827072998}
   - {fileID: 609989573}
   - {fileID: 1177845430}
-  - {fileID: 1043240212}
   - {fileID: 9842}
+  - {fileID: 1043240212}
   - {fileID: 1613275505}
   - {fileID: 1178607575}
   - {fileID: 1359745356}
@@ -3592,7 +3642,7 @@ PrefabInstance:
     - target: {fileID: 6713691957324267559, guid: 24eea7e942a74d54fa732d379f417f52,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6713691957324267559, guid: 24eea7e942a74d54fa732d379f417f52,
         type: 3}
