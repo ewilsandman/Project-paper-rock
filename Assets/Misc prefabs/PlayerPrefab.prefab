@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2402998146858662954}
   - component: {fileID: 2402998146858662953}
-  - component: {fileID: 2402998146858662952}
   - component: {fileID: 2402998146858662955}
   m_Layer: 0
   m_Name: PlayerPrefab
@@ -47,33 +46,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxCards: 6
-  OfsetPos: {x: 200, y: 0, z: 0}
   board: {fileID: 0}
-  cardsInHand: []
-  TurnHandler: {fileID: 2402998146858662952}
-  PlayerCharacter: {fileID: 0}
-  BaseFunds: 5
-  FundDisplay: {fileID: 0}
-  pile: {fileID: 2402998146858662955}
---- !u!114 &2402998146858662952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2402998146858662958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd7768aeb7e83ae4bbc76e630b70b9b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeLimit: 120
-  turnTime: 0
-  turnsElapsed: 0
-  TurnActive: 0
-  handRef: {fileID: 2402998146858662953}
-  turnTimer: {fileID: 0}
   playerCharacter: {fileID: 0}
+  otherCharacter: {fileID: 0}
+  playerFunds: 0
+  baseFunds: 5
+  pile: {fileID: 2402998146858662955}
+  cardsInHand: []
+  singlePlayer: 1
+  aiPlayer: 0
+  aiRef: {fileID: 0}
+  friendly: 0
 --- !u!114 &2402998146858662955
 MonoBehaviour:
   m_ObjectHideFlags: 0

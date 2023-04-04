@@ -1,35 +1,48 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class EasyAi : MonoBehaviour // might rename to just AI and use enum for parameters
 {
+    
+    /// <summary>
+    /// AI should:
+    /// take into account the cards it has,
+    /// the cards it could have,
+    /// the board status,
+    /// its health
+    /// and the enemy's health
+    /// </summary>
      private Board boardReference;
      private Hand handReference;
-     private PlayerCharacter friendlyPlayerChar; // unused for now
+     private PlayerCharacter friendlyPlayerChar; // unused for now, usefull to have the AI check if it can be killed next round
      private PlayerCharacter hostilePlayerChar;
-     private CoreLoop loopReference;
+     //private CoreLoop loopReference;
 
     private List<BaseCard> _currentPlayableCards;
-    private int _currentFunds;
+    //private int _currentFunds;
 
-    private Minion[] _hostileMinions; // acts as bool depending on empty
-    private Minion[] _friendlyMinions;
+    private List<Minion> _hostileMinions; // acts as bool depending on empty
+    private List<Minion> _friendlyMinions;
 
-    public void Setup(Board board, Hand hand, PlayerCharacter friendly, PlayerCharacter hostile, CoreLoop loop)
+    public void Setup(Board board, Hand hand, PlayerCharacter friendly, PlayerCharacter hostile)
     {
         Debug.Log("AI "+ gameObject.name +" setting up");
         boardReference = board;
         handReference = hand;
         friendlyPlayerChar = friendly;
         hostilePlayerChar = hostile;
-        loopReference = loop;
     }
     
     public void TurnStart()
     {
-        Debug.Log("AI starting turn");
+        StartCoroutine(PerformTurn());
+    }
+
+    private IEnumerator PerformTurn()
+    {
         GetCardConditions(); // oh well
         while (_currentPlayableCards.Count > 0) // possible infinite loop
         {
@@ -39,19 +52,21 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
             {
                 PlayCard();
             }
+            yield return new WaitForSeconds(.2f);
         }
         GetBoardConditions();
+        yield return new WaitForSeconds(1f);
         MakeAttacks();
-        loopReference.EndTurn();
+        boardReference.EndTurn();
+        StopCoroutine(PerformTurn());
     }
-    
+
     private void PlayCard()
     {
-        if (boardReference.PlaceForMinion(true))
+        if (boardReference.PlaceForMinion(false))
         {
             Debug.Log("found position, playing card");
-
-            _currentFunds -= _currentPlayableCards[0].cost;
+            
             _currentPlayableCards[0].OnMouseDown();
         }
         else
@@ -61,55 +76,101 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
         }
     }
 
+    private int countOutgoingDamage()
+    {
+        int outgoing = 0;
+        if (_friendlyMinions.Count > 0)
+        {
+            foreach (Minion FM in _friendlyMinions)
+            {
+                outgoing += FM.strength;
+            }
+        }
+        return outgoing;
+    }
+
+    private int countIcomingDamage()
+    {
+        int incoming = 0;
+        if (_hostileMinions.Count > 0)
+        {
+            foreach (Minion HM in _hostileMinions)
+            {
+                incoming += HM.strength;
+            }
+        }
+        return incoming;
+    }
+
     private void MakeAttacks()
     {
-        Debug.Log("Committing attack");
-        while (_hostileMinions.Length > 0) 
-        {
-            if (_friendlyMinions.Length > 0)
+        GetBoardConditions();
+        if (countOutgoingDamage() >= hostilePlayerChar.health) // could be toggled to make a less ruthless AI
+        {   // "going for the throat"
+            Debug.Log("Can kill, will do so");
+            foreach (Minion minion in _friendlyMinions) // should break if invalid?
             {
-                Debug.Log("Attacking enemy minion: " + _hostileMinions[0].name);
-                _friendlyMinions[0].Attack(_hostileMinions[0].gameObject);
-                GetBoardConditions(); // very ineffective
-            }
-            else
-            {
-                _hostileMinions = Array.Empty<Minion>();
+                AIAttack(minion.gameObject, hostilePlayerChar.gameObject);
             }
         }
-        //Debug.Log(_friendlyMinions[0]);
-        
-        foreach (Minion minion in _friendlyMinions) // should break if invalid?
+        /*else if (countIcomingDamage() >= friendlyPlayerChar.health)
         {
-            Debug.Log("No enemy minions left, attacking head");
-            minion.Attack(hostilePlayerChar.gameObject);
+            // be more passive, prioritize healing and defensive cards
+        }*/
+        else 
+        {
+            Debug.Log("Committing attack");
+            while (_hostileMinions.Count > 0) 
+            {
+                if (_friendlyMinions.Count > 0)
+                {
+                    Debug.Log("Attacking enemy minion: " + _hostileMinions[0].name);
+                    Debug.Log(_friendlyMinions[0]);
+                    AIAttack(_friendlyMinions[0].gameObject, _hostileMinions[0].gameObject);
+                    GetBoardConditions(); // very ineffective
+                }
+                else
+                {
+                    _hostileMinions.Clear();
+                }
+            }
+            foreach (Minion minion in _friendlyMinions) // should break if invalid?
+            {
+                Debug.Log("No enemy minions left, attacking head");
+                minion.Attack(hostilePlayerChar.gameObject);
+            }
         }
+    }
+
+    private void AIAttack(GameObject attacker, GameObject target)
+    {
+        boardReference.AddAttacker(attacker);
+        boardReference.AddTarget(target);
     }
 
     private void GetCardConditions() // condition in hand
     {
         Debug.Log("Fetching Card conditions");
-        List<BaseCard> allCards = handReference.cardsInHand; // I hate the antichrist (VAR)
+        List<BaseCard> allCards = handReference.cardsInHand;
         List<BaseCard> sortedCards = new List<BaseCard>(); // could sort by cost?
         foreach (BaseCard card in allCards)
         {
-            if (card.CheckCost(handReference.playerFunds))
+            if (handReference.CheckCost(card))
             {
                 sortedCards.Add(card);
             }
         }
         _currentPlayableCards = sortedCards;
-        _currentFunds = handReference.playerFunds;
     }
 
     private void GetBoardConditions() // get after cards are placed,
-                                      // does not need to be handled by Interface
     {
         Debug.Log("Fetching board conditions");
-        Minion[] possibleMinions = boardReference.playerMinions;
+        List<Minion> possibleMinions = boardReference.playerMinions;
         
         List<Minion> sortedMinions = new List<Minion>();
-        if (possibleMinions.Length > 0)
+        sortedMinions.Clear(); // possibly not clearing?
+        if (possibleMinions.Count > 0)
         {
             foreach (Minion minion in possibleMinions)
             {
@@ -117,14 +178,14 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
                 if (minion != null) 
                 {
                     Debug.Log("null-check passed");
-                    if (!minion.attackedThisTurn)
+                    if (!minion.CheckAttack())
                     {
                         sortedMinions.Add(minion);
                     }
                 }
             }
         }
-        _hostileMinions = possibleMinions.Length > 0 ? boardReference.hostileMinions : Array.Empty<Minion>(); // very cool but dumb
-        _friendlyMinions = sortedMinions.ToArray(); // always null :(
+        _hostileMinions = boardReference.hostileMinions; 
+        _friendlyMinions = sortedMinions;
     }
 }

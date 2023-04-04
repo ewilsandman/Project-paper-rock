@@ -5,10 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-public class PlayerTurn : MonoBehaviour // naming
+public class PlayerTurn : MonoBehaviour //unused
 {
-    [SerializeField] private CoreLoop coreLoop;
-    
+
     // Start is called before the first frame update
     void Start()
     { }

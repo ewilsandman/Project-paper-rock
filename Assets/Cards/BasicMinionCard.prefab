@@ -59,7 +59,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnHandler: {fileID: 0}
-  cost: 2
   minionSpawning: 1
   minionRef: {fileID: 2303190162502371044, guid: b9bddd2e488c4cf48b68d6b33f0bb783,
     type: 3}
@@ -67,11 +66,12 @@ MonoBehaviour:
   boardRef: {fileID: 0}
   minionName: Basic Minion
   healthText: {fileID: 8486798630456097218}
-  strenghtText: {fileID: 2868405335417673551}
+  strengthText: {fileID: 2868405335417673551}
   costText: {fileID: 1109390692459822522}
   nameText: {fileID: 8351777357033114803}
   health: 2
   strength: 3
+  cost: 2
 --- !u!222 &2116517198080980426
 CanvasRenderer:
   m_ObjectHideFlags: 0

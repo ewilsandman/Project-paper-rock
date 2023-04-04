@@ -15,11 +15,11 @@ public class AiInterface : MonoBehaviour // unused, might return
     public List<BaseCard> GetAvailableCards() // to be called on start and after every play,
                                               // could be done via a dictionary
     {
-        List<BaseCard> allCards = hand.cardsInHand; // I hate the antichrist (VAR)
+        List<BaseCard> allCards = hand.cardsInHand;
         List<BaseCard> sortedCards = new List<BaseCard>(); // could sort by cost?
         foreach (BaseCard card in allCards)
         {
-            if (card.CheckCost(hand.playerFunds))
+            if (hand.CheckCost(card))
             {
                 sortedCards.Add(card);
             }

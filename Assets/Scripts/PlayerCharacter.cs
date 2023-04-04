@@ -11,7 +11,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private Text deployPointDisplay;
     [SerializeField] private Text healthPointDisplay;
     [SerializeField] private Text pileCardsDisplay; // unused
-    [SerializeField] private Pile _pile;
+    [FormerlySerializedAs("_pile")] [SerializeField] private Pile pile;
     [FormerlySerializedAs("_board")] [SerializeField] private Board board;
 
     // Start is called before the first frame update
@@ -22,7 +22,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void ButtonResponse()
     {
-        if (!friendly) // friendly status needs to change with the "active turn system"
+        if (!friendly)
         {
             board.AddTarget(gameObject);
         }
@@ -32,7 +32,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (health + delta < 0)
         {
-            Debug.Log("ono I am kill" + transform.name);
+            Debug.Log("ono I am kill");
             SceneManager.LoadScene(2);
             // die and mark other player victory
         }
@@ -55,6 +55,6 @@ public class PlayerCharacter : MonoBehaviour
     {
         deployPointDisplay.text = "Funds: " + deployPoints;
         healthPointDisplay.text = "Health: " + health;
-        pileCardsDisplay.text = "Cards: " + _pile.cardsLeft();
+        pileCardsDisplay.text = "Cards: " + pile.cardsLeft();
     }
 }

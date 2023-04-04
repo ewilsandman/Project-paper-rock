@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2158.3652, g: 2260.5703, b: 3278.4492, a: 1}
+  m_IndirectSpecularColor: {r: 2159.1514, g: 2263.5762, b: 3287.211, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -953,101 +953,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2046492096}
     m_Modifications:
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
+    - target: {fileID: 2402998146858662953, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}
       propertyPath: aiRef
       value: 
       objectReference: {fileID: 685009629}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: blocker
-      value: 
-      objectReference: {fileID: 1178607574}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: aiPlayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: boardRef
-      value: 
-      objectReference: {fileID: 1283085366}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: turnTime
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: timeLimit
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: turnTimer
-      value: 
-      objectReference: {fileID: 1359745358}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: playerChar
-      value: 
-      objectReference: {fileID: 1613275506}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: OtherPlayer
-      value: 
-      objectReference: {fileID: 1827072996}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: hostileChar
-      value: 
-      objectReference: {fileID: 1043240213}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: otherPlayer
-      value: 
-      objectReference: {fileID: 1827072996}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: TimeToChange
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: timeToChange
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: BlueBackground
-      value: 
-      objectReference: {fileID: 1565718774}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: blueBackground
-      value: 
-      objectReference: {fileID: 1565718774}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: playerCharacter
-      value: 
-      objectReference: {fileID: 1613275506}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: OrangeBackground
-      value: 
-      objectReference: {fileID: 9841}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: orangeBackground
-      value: 
-      objectReference: {fileID: 9841}
     - target: {fileID: 2402998146858662953, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}
       propertyPath: board
       value: 
       objectReference: {fileID: 1283085366}
+    - target: {fileID: 2402998146858662953, guid: d661acff755d8d749b9b1bb1fbdad6e1,
+        type: 3}
+      propertyPath: aiPlayer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2402998146858662953, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}
       propertyPath: otherHand
@@ -1058,6 +978,11 @@ PrefabInstance:
       propertyPath: FundDisplay
       value: 
       objectReference: {fileID: 833822028}
+    - target: {fileID: 2402998146858662953, guid: d661acff755d8d749b9b1bb1fbdad6e1,
+        type: 3}
+      propertyPath: otherCharacter
+      value: 
+      objectReference: {fileID: 1043240213}
     - target: {fileID: 2402998146858662953, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}
       propertyPath: PlayerCharacter
@@ -1168,18 +1093,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 609989572}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &609989575 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-    type: 3}
-  m_PrefabInstance: {fileID: 609989572}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd7768aeb7e83ae4bbc76e630b70b9b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &609989576 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2402998146858662953, guid: d661acff755d8d749b9b1bb1fbdad6e1,
@@ -1984,16 +1897,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxMinions: 5
-  currentLoopRef: {fileID: 1827072996}
-  otherLoopRef: {fileID: 609989575}
   player1Hand: {fileID: 1827072997}
   player2Hand: {fileID: 609989576}
+  activePlayer: {fileID: 0}
   playerMinions: []
   playerMinionPositions: {fileID: 1503603556}
   hostileMinions: []
   hostileMinionPositions: {fileID: 16836159}
   hostileMinionExample: {fileID: 2303190162502371044, guid: b9bddd2e488c4cf48b68d6b33f0bb783,
     type: 3}
+  singlePlayer: 1
+  hotSeat: 0
+  timeLimit: 120
+  _turnsElapsed: 0
+  timeThisTurn: 0
+  turnTimer: {fileID: 1359745358}
+  blocker: {fileID: 1178607574}
+  swapTimeLimit: 0
+  blueBackground: {fileID: 1565718774}
+  orangeBackground: {fileID: 9841}
 --- !u!1 &1359745355
 GameObject:
   m_ObjectHideFlags: 0
@@ -2045,7 +1967,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c800ed1db6de997438ca0e7f8af22328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coreLoop: {fileID: 1827072996}
 --- !u!114 &1359745358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2499,7 +2420,7 @@ MonoBehaviour:
   deployPointDisplay: {fileID: 833822028}
   healthPointDisplay: {fileID: 96422246}
   pileCardsDisplay: {fileID: 1896882935}
-  _pile: {fileID: 788043387}
+  pile: {fileID: 788043387}
   board: {fileID: 1283085366}
 --- !u!114 &1613275507
 MonoBehaviour:
@@ -2853,18 +2774,6 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
---- !u!114 &1827072996 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-    type: 3}
-  m_PrefabInstance: {fileID: 2402998147330103244}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd7768aeb7e83ae4bbc76e630b70b9b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1827072997 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2402998146858662953, guid: d661acff755d8d749b9b1bb1fbdad6e1,
@@ -3368,81 +3277,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2046492096}
     m_Modifications:
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: blocker
-      value: 
-      objectReference: {fileID: 1178607574}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: boardRef
-      value: 
-      objectReference: {fileID: 1283085366}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: timeLimit
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: turnTimer
-      value: 
-      objectReference: {fileID: 1359745358}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: playerChar
-      value: 
-      objectReference: {fileID: 1043240213}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: OtherPlayer
-      value: 
-      objectReference: {fileID: 609989575}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: hostileChar
-      value: 
-      objectReference: {fileID: 1613275506}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: otherPlayer
-      value: 
-      objectReference: {fileID: 609989575}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: TimeToChange
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: timeToChange
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: BlueBackground
-      value: 
-      objectReference: {fileID: 1565718774}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: blueBackground
-      value: 
-      objectReference: {fileID: 1565718774}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: playerCharacter
-      value: 
-      objectReference: {fileID: 1043240213}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: OrangeBackground
-      value: 
-      objectReference: {fileID: 9841}
-    - target: {fileID: 2402998146858662952, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: orangeBackground
-      value: 
-      objectReference: {fileID: 9841}
     - target: {fileID: 2402998146858662953, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}
       propertyPath: board
@@ -3461,7 +3295,7 @@ PrefabInstance:
     - target: {fileID: 2402998146858662953, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}
       propertyPath: friendly
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2402998146858662953, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}
@@ -3473,6 +3307,11 @@ PrefabInstance:
       propertyPath: FundDisplay
       value: 
       objectReference: {fileID: 421376577}
+    - target: {fileID: 2402998146858662953, guid: d661acff755d8d749b9b1bb1fbdad6e1,
+        type: 3}
+      propertyPath: otherCharacter
+      value: 
+      objectReference: {fileID: 1613275506}
     - target: {fileID: 2402998146858662953, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}
       propertyPath: PlayerCharacter
@@ -3593,7 +3432,12 @@ PrefabInstance:
         type: 3}
       propertyPath: loop
       value: 
-      objectReference: {fileID: 1827072996}
+      objectReference: {fileID: 0}
+    - target: {fileID: 6713691957324267558, guid: 24eea7e942a74d54fa732d379f417f52,
+        type: 3}
+      propertyPath: pile
+      value: 
+      objectReference: {fileID: 1827072999}
     - target: {fileID: 6713691957324267558, guid: 24eea7e942a74d54fa732d379f417f52,
         type: 3}
       propertyPath: _pile

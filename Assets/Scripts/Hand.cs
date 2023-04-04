@@ -2,20 +2,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Hand : MonoBehaviour // really this should be called player
+public class Hand : MonoBehaviour //should be called player but renaming is scary
 {
     public int maxCards;
 
-
     [SerializeField] private Board board;
-    [SerializeField] private Hand otherHand;
-    [SerializeField] private PlayerCharacter playerCharacter;
-    [FormerlySerializedAs("TurnHandler")] [SerializeField] private CoreLoop turnHandler;
+    public PlayerCharacter playerCharacter;
+    [SerializeField] private PlayerCharacter otherCharacter; // AI reasons
     
+   // [FormerlySerializedAs("TurnHandler")] [SerializeField] private CoreLoop turnHandler;
     [FormerlySerializedAs("_playerFunds")] public int playerFunds;
     [FormerlySerializedAs("BaseFunds")] [SerializeField] private int baseFunds;
     public Pile pile;
     public List<BaseCard> cardsInHand;
+    
+    //[SerializeField] private bool singlePlayer = true; // in this case singlePlayer means versus AI
+    [SerializeField] private bool aiPlayer = false; // failsafe
+    [SerializeField] private EasyAi aiRef;
 
     [FormerlySerializedAs("Friendly")] public bool friendly;
     
@@ -23,36 +26,68 @@ public class Hand : MonoBehaviour // really this should be called player
     // Start is called before the first frame update
     void Start()
     {
+        if (aiPlayer)
+        {
+            aiRef.Setup(board, this, playerCharacter, otherCharacter);
+        }
         cardsInHand = new List<BaseCard>();
         DrawCards();
+    }
+
+    public void StartTurn() // mostly for AI reasons
+    {
+        if (aiPlayer)
+        {
+            aiRef.TurnStart();
+        }
     }
 
     void GetCardToHand()
     {
         BaseCard template = pile.PileToHand();
-        if (template == null)
+        if (template == null) // if no more cards exist
         {
-            
+            playerCharacter.DeltaHealth(-1);
         }
         else
         {        
             BaseCard toBeAdded = Instantiate(template, transform);
             toBeAdded.handRef = this;
-            toBeAdded.boardRef = board;
-            toBeAdded.turnHandler = turnHandler;
-            Debug.Log("Card added: " + toBeAdded.name);
             cardsInHand.Add(toBeAdded);
         }
-
     }
 
-    public void RemoveCard(BaseCard card)
+    public bool CheckCost(BaseCard toCheck) // also used for visuals
+    {
+        if (toCheck.cost <= playerFunds)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void OnCardClick(BaseCard clicked)
+    {
+        if (board.activePlayer == this)
+        {
+            if (CheckCost(clicked))
+            {
+                if (board.HandleCard(clicked, this))
+                {
+                    RemoveCard(clicked);
+                }
+            }   
+        }
+    }
+
+    private void RemoveCard(BaseCard card)
     {
         cardsInHand.Remove(card);
         Destroy(card.gameObject);
     }
 
-    void CardPositions()
+    void CardPositions() // cosmetic, handles position of card in UI
     {
         //Debug.Log("Start loop");
         for (int i = 0; i < cardsInHand.Count; i++)
@@ -63,6 +98,11 @@ public class Hand : MonoBehaviour // really this should be called player
                 cardsInHand[i].UpdateTextFields(); 
             }
         }
+    }
+
+    public void HandleMinionClick(Minion clicked)
+    {
+        //clicked
     }
 
     public void DrawCards()
@@ -77,9 +117,9 @@ public class Hand : MonoBehaviour // really this should be called player
             CardPositions();
         }
     }
-    
 
-    public void UpdateFunds(int deltaFunds)
+
+    public void UpdateFunds(int deltaFunds) 
     {
         playerFunds += deltaFunds;
         playerCharacter.deployPoints = playerFunds;
@@ -92,13 +132,18 @@ public class Hand : MonoBehaviour // really this should be called player
         playerCharacter.UpdateTextFields();
     }
 
-    public void SwapHand() // done by active player before turn swaps
+    public void SwapHand(Hand otherHand) // done by active player before turn swaps
     {
         otherHand.friendly = true;
         (cardsInHand, otherHand.cardsInHand) = (otherHand.cardsInHand, cardsInHand); // no Idea how this works
         otherHand.CardPositions();
         friendly = false;
         CardPositions();
-        
+    }
+
+    public void Swap(Hand otherHand, PlayerCharacter otherCharacter) // for "hot seat" game mode
+    {
+     SwapHand(otherHand);
+     playerCharacter.SwapSides(otherCharacter);
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class CoreLoop : MonoBehaviour // this is a abomination of a script
+public class CoreLoop : MonoBehaviour // UNUSED
 {
     // all local to this player
     [FormerlySerializedAs("TimeToChange")] [SerializeField] private float timeToChange;
@@ -12,13 +12,13 @@ public class CoreLoop : MonoBehaviour // this is a abomination of a script
 
     public float turnsElapsed; // turns since start
     [FormerlySerializedAs("TurnActive")] public bool turnActive;
-    private bool _waitingToSwap;
-    [SerializeField] private Hand handRef;
-    [FormerlySerializedAs("OtherPlayer")] [SerializeField] private CoreLoop otherPlayer;
+    // private bool _waitingToSwap;
+    //[FormerlySerializedAs("OtherPlayer")] [SerializeField] private CoreLoop otherPlayer;
 
     [SerializeField] private Board boardRef;
     [SerializeField] private Text turnTimer;
     [SerializeField] private Hand playerHand;
+    [SerializeField] private Hand hostileHand;
     [SerializeField] private PlayerCharacter playerChar;
     [SerializeField] private PlayerCharacter hostileChar;
 
@@ -26,17 +26,7 @@ public class CoreLoop : MonoBehaviour // this is a abomination of a script
     [FormerlySerializedAs("OrangeBackground")] [SerializeField] private GameObject orangeBackground;
     [SerializeField] private GameObject blocker;
 
-    [SerializeField] private bool singlePlayer = true; // in this case singlePlayer means versus AI
-    [SerializeField] private bool aiPlayer = false; // failsafe
-    [SerializeField] private EasyAi aiRef; // only player controlled by AI has reference
 
-    private void Start()
-    {
-        if (aiPlayer)
-        {
-            aiRef.Setup(boardRef, handRef, playerChar, hostileChar, this);
-        }
-    }
 
     private void StartTurn()
     {
@@ -45,17 +35,14 @@ public class CoreLoop : MonoBehaviour // this is a abomination of a script
         turnActive = true;
         if (turnsElapsed >0)
         { 
-            handRef.DrawCards();
+            playerHand.DrawCards();
         }
-        handRef.ResetFunds();
+        playerHand.ResetFunds();
         blocker.SetActive(false);
-        if (aiPlayer)
-        {
-            aiRef.TurnStart();
-        }
+
     }
 
-    public void EndTurn()
+/*    public void EndTurn()
     {
         turnTime = 0;
         turnsElapsed++;
@@ -69,17 +56,17 @@ public class CoreLoop : MonoBehaviour // this is a abomination of a script
             boardRef.MultiplayerSwap();
             otherPlayer.StartTurn();
         }
-    }
+    }*/
 
     // Update is called once per frame
-    void FixedUpdate()
+    /*void FixedUpdate()
     {
         if (turnActive)
         {
             if (turnTime > timeLimit)
             {
                 Debug.Log("Times up");
-                EndTurn();
+                //EndTurn();
             }
             else // gives you one extra frame but whatever
             {
@@ -94,7 +81,7 @@ public class CoreLoop : MonoBehaviour // this is a abomination of a script
             turnTimer.text = "Time left:" + timeToDisplay.ToString();
         }
 
-        if (!singlePlayer)
+       // if (!singlePlayer)
         {
             if (_waitingToSwap)
             {
@@ -118,12 +105,11 @@ public class CoreLoop : MonoBehaviour // this is a abomination of a script
                 turnTimer.text = "Changing in:" + timeToDisplay.ToString();
             }
         }
-    }
+    }*/
 
-    void ToggleGameMode() // changes between hot seat and PvE
+    private void ToggleGameMode() // changes between hot seat and PvE, unused
     {
-        
-        singlePlayer = !singlePlayer; // does this work?
+       // singlePlayer = !singlePlayer; // does this work?
     }
 
     void StartSwap()// multiplayer does not need this
@@ -133,7 +119,7 @@ public class CoreLoop : MonoBehaviour // this is a abomination of a script
 
         blocker.SetActive(true);
         
-        _waitingToSwap = true;
+       // _waitingToSwap = true;
     }
 
     void SwapPlayers()
@@ -141,8 +127,8 @@ public class CoreLoop : MonoBehaviour // this is a abomination of a script
         Debug.Log("swapping players");
         // needs if statement based on game mode
         playerChar.SwapSides(hostileChar);
-        handRef.SwapHand();
+        playerHand.SwapHand(hostileHand);
         boardRef.SwapMinons();
-        otherPlayer.StartTurn();
+        //otherPlayer.StartTurn();
     }
 }

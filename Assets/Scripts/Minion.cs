@@ -4,10 +4,9 @@ using UnityEngine.UI;
 
 public class Minion : MonoBehaviour // will work similar to card
 {
-    public CoreLoop turnHandler;
 
-    public bool attackedThisTurn = false;
-
+    private bool HasAttacked = true;
+    
     public Board boardRef;
     public Hand playerHand;
     public int health;
@@ -24,17 +23,25 @@ public class Minion : MonoBehaviour // will work similar to card
         ResetAttack();
     }
 
+    public bool CheckAttack()
+    {
+        return HasAttacked;
+    }
+    
+
     public void ResetAttack()
     {
-        attackedThisTurn = false;
+        HasAttacked = false;
     }
 
     // private Hand playerHand;
     // Start is called before the first frame update
     public void ButtonResponse()
     {
+        //playerHand.HandleMinionClick();
         if (playerHand.friendly)
-        { 
+        {
+            Debug.Log("have not attacked");
             boardRef.AddAttacker(gameObject);
         }
         else
@@ -59,7 +66,7 @@ public class Minion : MonoBehaviour // will work similar to card
 
     public void Attack(GameObject target)
     {
-        if (attackedThisTurn)
+        if (HasAttacked)
         {
             return;
         }
@@ -76,13 +83,13 @@ public class Minion : MonoBehaviour // will work similar to card
             playerTargetScript.DeltaHealth(-strength);
         }
 
-        attackedThisTurn = true;
+        HasAttacked = true;
     }
 
     private void Kill() // this would handle killing any "shadow" in multiplayer as well
     {
         Debug.Log("starting kill");
-        boardRef.RemoveMinon(gameObject);
+        Board.RemoveMinon(gameObject);
     }
     private void UpdateTextFields()
     {   

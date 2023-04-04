@@ -1,26 +1,25 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BaseCard : MonoBehaviour // particularly special cards will have additional scripts and tags
 {
-    public CoreLoop turnHandler;
-    
-    [FormerlySerializedAs("_cost")] public int cost;
+
     public bool minionSpawning;
-    public Minion minionRef;
+    public Minion minionRef; // for handling if minion has special conditions
     public Hand handRef;
-    public Board boardRef;
     public string minionName;
 
     [SerializeField] private Text healthText;
-    [SerializeField] private Text strenghtText;
+    [SerializeField] private Text strengthText;
     [SerializeField] private Text costText;
     [SerializeField] private Text nameText;
 
 
     public int health; // these could change in hand
     public int strength; //
+    public int cost;
 
     private void OnMouseOver() // TODO:visualize that player can/cant deploy card
     {
@@ -29,56 +28,18 @@ public class BaseCard : MonoBehaviour // particularly special cards will have ad
             
         }*/
     }
-
-    public bool CheckCost(int available)
-    {
-        if (available >= cost)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-   /* public void AiAction()
-    {
-        if (minionSpawning)
-        {
-            if (boardRef.PlaceForMinion(handRef.friendly))
-            {
-                Minion templateMinion = minionRef;
-                boardRef.AddMinion(templateMinion, health, strength, minionName, handRef.friendly);
-                handRef.UpdateFunds(-cost);
-                handRef.RemoveCard(this);
-            }
-        }
-    }*/
+    
 
     public void OnMouseDown()
     {
-        if (turnHandler.turnActive)
-        {
-            if (!CheckCost(cost)) // reduce compounding 
-                return;  
-            
-            if (minionSpawning)
-            {
-                if (boardRef.PlaceForMinion(handRef.friendly))
-                {
-                    Minion templateMinion = minionRef;
-                    boardRef.AddMinion(templateMinion, health, strength, minionName, handRef.friendly);
-                    handRef.UpdateFunds(-cost);
-                    handRef.RemoveCard(this);
-                }
-            }
-        }
+        handRef.OnCardClick(this);
     }
 
-   public void UpdateTextFields()
+    public void UpdateTextFields() // changes text based on a change in data
     {
-        healthText.text = health.ToString();
-        strenghtText.text = strength.ToString();
-        costText.text = cost.ToString();
+        healthText.text = health > 0 ? health.ToString() : "";
+        strengthText.text = strength > 0 ? strength.ToString() : "";
+        costText.text = cost > 0 ? cost.ToString() : "";
         nameText.text = minionName;
     }
 }
