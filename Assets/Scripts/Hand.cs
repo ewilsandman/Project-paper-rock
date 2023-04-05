@@ -102,7 +102,15 @@ public class Hand : MonoBehaviour //should be called player but renaming is scar
 
     public void HandleMinionClick(Minion clicked)
     {
-        //clicked
+        if (friendly)
+        { 
+            board.AddAttacker(clicked.gameObject);
+        }
+        else
+        { 
+            board.AddTarget(clicked.gameObject);
+        }
+        
     }
 
     public void DrawCards()

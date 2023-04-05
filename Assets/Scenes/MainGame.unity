@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2159.1514, g: 2263.5762, b: 3287.211, a: 1}
+  m_IndirectSpecularColor: {r: 2160.371, g: 2264.0352, b: 3286.6875, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -158,8 +158,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 150}
-  m_SizeDelta: {x: 0, y: 150}
+  m_AnchoredPosition: {x: 0, y: 166}
+  m_SizeDelta: {x: 0, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &9843
 MonoBehaviour:
@@ -1021,7 +1021,7 @@ PrefabInstance:
     - target: {fileID: 2402998146858662954, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 135.3
+      value: 170
       objectReference: {fileID: 0}
     - target: {fileID: 2402998146858662954, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}
@@ -1909,7 +1909,7 @@ MonoBehaviour:
   singlePlayer: 1
   hotSeat: 0
   timeLimit: 120
-  _turnsElapsed: 0
+  turnsElapsed: 0
   timeThisTurn: 0
   turnTimer: {fileID: 1359745358}
   blocker: {fileID: 1178607574}
@@ -2317,8 +2317,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -149.99997}
-  m_SizeDelta: {x: 0, y: 150}
+  m_AnchoredPosition: {x: 0, y: -166}
+  m_SizeDelta: {x: 0, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1565718776
 MonoBehaviour:
@@ -3345,7 +3345,7 @@ PrefabInstance:
     - target: {fileID: 2402998146858662954, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -137.7
+      value: -170
       objectReference: {fileID: 0}
     - target: {fileID: 2402998146858662954, guid: d661acff755d8d749b9b1bb1fbdad6e1,
         type: 3}

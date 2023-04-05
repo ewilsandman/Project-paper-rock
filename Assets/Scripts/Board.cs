@@ -18,15 +18,15 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     [SerializeField]
 
     public Hand activePlayer;
-    private Transform _activeMinionPositions;
+    private Transform _activePlayerMinionPositions;
 
     private GameObject _targetRef;
     private GameObject _attackerRef;
 
-    public List<Minion> playerMinions;
-    public Transform playerMinionPositions; // cursed way of doing things
-    public List<Minion> hostileMinions;
-    public Transform hostileMinionPositions;
+    [FormerlySerializedAs("playerMinions")] public List<Minion> activePlayerMinions;
+    [FormerlySerializedAs("playerMinionPositions")] public Transform player1MinionPositions; // cursed way of doing things
+    [FormerlySerializedAs("hostileMinions")] public List<Minion> passivePlayerMinions;
+    [FormerlySerializedAs("hostileMinionPositions")] public Transform player2MinionPositions;
     
     
     [FormerlySerializedAs("HostileMinionExample")] [SerializeField] private Minion hostileMinionExample;
@@ -35,7 +35,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     [SerializeField] private bool hotSeat;
     
     [SerializeField] private float timeLimit = 120;
-    [SerializeField] private int _turnsElapsed = 0;
+    [SerializeField] private int turnsElapsed;
     [SerializeField] private float timeThisTurn; 
     [SerializeField] private Text turnTimer;
     
@@ -51,8 +51,8 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     // Start is called before the first frame update
     void Start()
     {
-        playerMinions = new List<Minion>();
-        hostileMinions = new List<Minion>();
+        activePlayerMinions = new List<Minion>();
+        passivePlayerMinions = new List<Minion>();
     }
 
     public void EndTurn()
@@ -62,7 +62,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
             activePlayer.friendly = false;
         }
         timeThisTurn = 0;
-        if (_turnsElapsed == 0)
+        if (turnsElapsed == 0)
         {
             Debug.Log("game started");
             int random = Random.Range(0, 2);
@@ -70,15 +70,14 @@ public class Board : MonoBehaviour // this will handle enemy attacks
             {
                 case 0:
                     activePlayer = player1Hand;
-                    _activeMinionPositions = playerMinionPositions;
+                    _activePlayerMinionPositions = player1MinionPositions;
                     break;
                     case 1: 
                         activePlayer = player2Hand;
-                        _activeMinionPositions = hostileMinionPositions;
-                        List<Minion> tempMinions = new List<Minion>(); // to ensure continuity between friendly or enemy
-                        tempMinions = playerMinions;
-                        playerMinions = hostileMinions;
-                        hostileMinions = tempMinions;
+                        _activePlayerMinionPositions = player2MinionPositions;
+                        List<Minion> tempMinions = new List<Minion>(activePlayerMinions); // to ensure continuity between friendly or enemy
+                        activePlayerMinions = new List<Minion>(passivePlayerMinions);
+                        passivePlayerMinions = new List<Minion>(tempMinions);
                         break;
 
             }
@@ -100,21 +99,20 @@ public class Board : MonoBehaviour // this will handle enemy attacks
             {
                 Debug.LogError("No game mode selected!");
             }
-            foreach (Minion m in hostileMinions)
+            foreach (Minion m in passivePlayerMinions)
             {
                 if (m != null)
                 {
                     m.ResetAttack();
                 }
             }
-            _activeMinionPositions = _activeMinionPositions == playerMinionPositions ? hostileMinionPositions : playerMinionPositions;
-            List<Minion> tempMinions = new List<Minion>();
-            tempMinions = playerMinions;
-            playerMinions = hostileMinions;
-            hostileMinions = tempMinions;
+            _activePlayerMinionPositions = _activePlayerMinionPositions == player1MinionPositions ? player2MinionPositions : player1MinionPositions;
+            List<Minion> tempMinions = new List<Minion>(activePlayerMinions); // to ensure continuity between friendly or enemy
+            activePlayerMinions = new List<Minion>(passivePlayerMinions);
+            passivePlayerMinions = new List<Minion>(tempMinions);
         }
         StartTurn();
-        _turnsElapsed++;
+        turnsElapsed++;
     }
 
     private void StartTurn()
@@ -191,11 +189,13 @@ public class Board : MonoBehaviour // this will handle enemy attacks
 
     public void AddAttacker(GameObject input)
     {
+        Debug.Log("attacker added");
         _attackerRef = input;
         HandleAttack();
     }
     public void AddTarget(GameObject input)
     {
+        Debug.Log("target added");
         _targetRef = input;
         HandleAttack();
     }
@@ -204,6 +204,25 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     {
         if (_targetRef != null & _attackerRef != null)
         {
+           
+            if (_targetRef.TryGetComponent(out ShieldMinion shieldminionComponent)) // check to see if target is shieldMinion
+            {
+                
+            }
+            else
+            {
+                foreach (Minion minion in passivePlayerMinions)
+                {
+                    if (minion != null)
+                    {
+                        minion.TryGetComponent(out shieldminionComponent); // if there is another minion with ShieldMinion it will be targeted instead
+                        {
+                            _targetRef = minion.gameObject;
+                            break;
+                        }
+                    }
+                }  
+            }
             _attackerRef.GetComponent<Minion>().Attack(_targetRef);
             _attackerRef = null;
             _targetRef = null;
@@ -214,7 +233,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     {
         for (int i = 0; i < maxMinions; i++)
         {
-            if (_activeMinionPositions.GetChild(i).childCount == 0) // risk of failing
+            if (_activePlayerMinionPositions.GetChild(i).childCount == 0) // risk of failing
             {
                 return true;
             }
@@ -230,23 +249,24 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         return false;
     }
 
-    public void AddMinion(Minion template, int health, int strength, string minionName, bool friendly) // could be remade to handle multiple spawns
+    public void AddMinion(Minion template, int health, int strength, string minionName,string describeString, bool friendly) // could be remade to handle multiple spawns
     {
         Minion toBeCreated = Instantiate(template, transform.parent);
         toBeCreated.health = health;
         toBeCreated.strength = strength;
         toBeCreated.minionName = minionName;
+        toBeCreated.descriptionString = describeString;
         toBeCreated.boardRef = this;
         toBeCreated.playerHand = activePlayer;
-        if (friendly)
+        if (friendly) // unused
         {
-            playerMinions.Add(toBeCreated);
+            activePlayerMinions.Add(toBeCreated);
             for (int i = 0; i < maxMinions; i++)
             {
-                if (_activeMinionPositions.GetChild(i).childCount == 0)
+                if (_activePlayerMinionPositions.GetChild(i).childCount == 0)
                 {
-                    toBeCreated.gameObject.transform.position = _activeMinionPositions.GetChild(i).position;
-                    toBeCreated.transform.SetParent( _activeMinionPositions.GetChild(i), true);
+                    toBeCreated.gameObject.transform.position = _activePlayerMinionPositions.GetChild(i).position;
+                    toBeCreated.transform.SetParent( _activePlayerMinionPositions.GetChild(i), true);
                     break;
                 }
             }
@@ -272,8 +292,21 @@ public class Board : MonoBehaviour // this will handle enemy attacks
        EndTurn();
     }
 
-    public static void RemoveMinon(GameObject target)
+    public void RemoveMinon(GameObject target)
     {
+        Debug.Log("removing minion");
+        Minion minionRef = target.GetComponent<Minion>();
+        if (activePlayerMinions.Contains(minionRef))
+        {
+            activePlayerMinions.Remove(minionRef);
+            Debug.Log("also from list");
+        }
+        else
+        {
+            passivePlayerMinions.Remove(minionRef);
+            Debug.Log("also from list");
+        }
+        
         Destroy(target);
     }
 
@@ -281,7 +314,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     {
         if (PlaceForMinion(false))
         {
-            AddMinion(hostileMinionExample, 2,3,"example" ,false);
+            AddMinion(hostileMinionExample, 2,3,"Example" ,"I'm for testing purposes" ,false);
         }
     }
 
@@ -289,7 +322,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     {
         if (toHandle.minionSpawning)
         {
-            AddMinion(toHandle.minionRef, toHandle.health,toHandle.strength, toHandle.minionName, from.friendly);
+            AddMinion(toHandle.minionRef, toHandle.health,toHandle.strength, toHandle.minionName, toHandle.descriptionString,from.friendly);
             from.UpdateFunds(-toHandle.cost);
             if (from.friendly)
             {
@@ -307,20 +340,20 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     public void SwapMinons()
     {
 
-        foreach (Minion PM in playerMinions)
+        foreach (Minion pm in activePlayerMinions)
         {
-            PM.transform.position = playerMinionPositions.GetChild(playerMinions.IndexOf(PM)).position;
-            PM.transform.SetParent(playerMinionPositions.GetChild(playerMinions.IndexOf(PM)));
-            PM.ResetAttack();
+            pm.transform.position = player1MinionPositions.GetChild(activePlayerMinions.IndexOf(pm)).position;
+            pm.transform.SetParent(player1MinionPositions.GetChild(activePlayerMinions.IndexOf(pm)));
+            pm.ResetAttack();
         }
         
-        foreach (Minion HM in hostileMinions)
+        foreach (Minion hm in passivePlayerMinions)
         {
-            if (HM != null)
+            if (hm != null)
             {
-                HM.transform.position = hostileMinionPositions.GetChild(hostileMinions.IndexOf(HM)).position;
-                HM.transform.SetParent(hostileMinionPositions.GetChild(hostileMinions.IndexOf(HM)));
-                HM.ResetAttack();
+                hm.transform.position = player2MinionPositions.GetChild(passivePlayerMinions.IndexOf(hm)).position;
+                hm.transform.SetParent(player2MinionPositions.GetChild(passivePlayerMinions.IndexOf(hm)));
+                hm.ResetAttack();
             }
         }
         

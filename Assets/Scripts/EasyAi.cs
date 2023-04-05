@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -24,8 +25,8 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
     private List<BaseCard> _currentPlayableCards;
     //private int _currentFunds;
 
-    private List<Minion> _hostileMinions; // acts as bool depending on empty
-    private List<Minion> _friendlyMinions;
+    private List<Minion> _hostileMinions = new List<Minion>(); // acts as bool depending on empty
+    private List<Minion> _friendlyMinions = new List<Minion>();
 
     public void Setup(Board board, Hand hand, PlayerCharacter friendly, PlayerCharacter hostile)
     {
@@ -43,10 +44,10 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
 
     private IEnumerator PerformTurn()
     {
+        Debug.Log("Ai performing turn");
         GetCardConditions(); // oh well
         while (_currentPlayableCards.Count > 0) // possible infinite loop
         {
-            Debug.Log("in card loop");
             GetCardConditions();
             if (_currentPlayableCards.Count > 0)
             {
@@ -124,9 +125,13 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
             {
                 if (_friendlyMinions.Count > 0)
                 {
-                    Debug.Log("Attacking enemy minion: " + _hostileMinions[0].name);
-                    Debug.Log(_friendlyMinions[0]);
-                    AIAttack(_friendlyMinions[0].gameObject, _hostileMinions[0].gameObject);
+                    if (_hostileMinions.First() != null && _friendlyMinions.First() != null)
+                    {
+                        Debug.Log("Attacking enemy minion: " + _hostileMinions.First().name);
+                        Debug.Log(_friendlyMinions[0]);
+                        AIAttack(_friendlyMinions[0].gameObject, _hostileMinions.First().gameObject);
+                    }
+
                     GetBoardConditions(); // very ineffective
                 }
                 else
@@ -166,8 +171,12 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
     private void GetBoardConditions() // get after cards are placed,
     {
         Debug.Log("Fetching board conditions");
-        List<Minion> possibleMinions = boardReference.playerMinions;
-        
+        List<Minion> possibleMinions = new List<Minion>(boardReference.activePlayerMinions);
+        if (_hostileMinions.Count > 0)
+        {
+            _hostileMinions.Clear();
+        }
+
         List<Minion> sortedMinions = new List<Minion>();
         sortedMinions.Clear(); // possibly not clearing?
         if (possibleMinions.Count > 0)
@@ -185,7 +194,7 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
                 }
             }
         }
-        _hostileMinions = boardReference.hostileMinions; 
+        _hostileMinions = new List<Minion>(boardReference.passivePlayerMinions); 
         _friendlyMinions = sortedMinions;
     }
 }

@@ -58,17 +58,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce872d8def6e1045aa2a7f4a01c39b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnHandler: {fileID: 0}
   minionSpawning: 1
   minionRef: {fileID: 2303190162502371044, guid: b9bddd2e488c4cf48b68d6b33f0bb783,
     type: 3}
   handRef: {fileID: 0}
-  boardRef: {fileID: 0}
   minionName: Basic Minion
+  descriptionString: sad
   healthText: {fileID: 8486798630456097218}
   strengthText: {fileID: 2868405335417673551}
   costText: {fileID: 1109390692459822522}
   nameText: {fileID: 8351777357033114803}
+  describeText: {fileID: 6325862738270699422}
   health: 2
   strength: 3
   cost: 2

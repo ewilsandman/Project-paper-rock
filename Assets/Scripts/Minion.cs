@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -5,53 +6,45 @@ using UnityEngine.UI;
 public class Minion : MonoBehaviour // will work similar to card
 {
 
-    private bool HasAttacked = true;
+    private bool HasAttacked = false;
     
     public Board boardRef;
     public Hand playerHand;
     public int health;
     public int strength;
     public string minionName;
+    public string descriptionString;
     
     [SerializeField] public Text healthText;
     [SerializeField] public Text strengthText;
     [SerializeField] public Text nameText;
+    [SerializeField] public Text describeText;
 
-    private void Start()
+    protected virtual void Start()
     {
         UpdateTextFields();
         ResetAttack();
     }
 
-    public bool CheckAttack()
+    public virtual bool CheckAttack()
     {
         return HasAttacked;
     }
     
 
-    public void ResetAttack()
+    public virtual void ResetAttack()
     {
         HasAttacked = false;
     }
 
     // private Hand playerHand;
     // Start is called before the first frame update
-    public void ButtonResponse()
+    public virtual void ButtonResponse()
     {
-        //playerHand.HandleMinionClick();
-        if (playerHand.friendly)
-        {
-            Debug.Log("have not attacked");
-            boardRef.AddAttacker(gameObject);
-        }
-        else
-        {
-            boardRef.AddTarget(gameObject);
-        }
-       
+        playerHand.HandleMinionClick(this);
     }
 
-    public void DeltaHealth(int delta)
+    public virtual void DeltaHealth(int delta)
     {
         if (health + delta <= 0)
         {
@@ -64,7 +57,7 @@ public class Minion : MonoBehaviour // will work similar to card
         UpdateTextFields();
     }
 
-    public void Attack(GameObject target)
+    public virtual void Attack(GameObject target)
     {
         if (HasAttacked)
         {
@@ -86,15 +79,16 @@ public class Minion : MonoBehaviour // will work similar to card
         HasAttacked = true;
     }
 
-    private void Kill() // this would handle killing any "shadow" in multiplayer as well
+    protected virtual void Kill() // this would handle killing any "shadow" in multiplayer as well
     {
         Debug.Log("starting kill");
-        Board.RemoveMinon(gameObject);
+        boardRef.RemoveMinon(gameObject);
     }
-    private void UpdateTextFields()
+    protected virtual void UpdateTextFields()
     {   
         healthText.text = health.ToString();
         strengthText.text = strength.ToString();
         nameText.text = minionName; // unlikely to change
+        describeText.text = descriptionString;
     }
 }
