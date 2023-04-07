@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 539373840}
   - component: {fileID: 539373841}
   m_Layer: 0
-  m_Name: BiggerMinionCard
+  m_Name: HealSpellCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,20 +58,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce872d8def6e1045aa2a7f4a01c39b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minionSpawning: 1
-  minionRef: {fileID: 449146386102885738, guid: 83aca6a8895f10748bdfd1c900973bcb,
-    type: 3}
+  minionSpawning: 0
+  minionRef: {fileID: 0}
   handRef: {fileID: 0}
-  minionName: ProtectingMinion
-  descriptionString: Protects
+  minionName: HealSpell
+  descriptionString: Heals instantly
   healthText: {fileID: 8486798630456097218}
   strengthText: {fileID: 2868405335417673551}
   costText: {fileID: 1109390692459822522}
   nameText: {fileID: 8351777357033114803}
   describeText: {fileID: 6325862738270699422}
   health: 5
-  strength: 2
-  cost: 5
+  strength: 0
+  cost: 3
 --- !u!222 &2116517198080980426
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -378,7 +377,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Big boi
+  m_Text: Title
 --- !u!1 &4952927558037804297
 GameObject:
   m_ObjectHideFlags: 0

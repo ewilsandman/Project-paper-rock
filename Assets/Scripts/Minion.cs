@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Minion : MonoBehaviour // will work similar to card
 {
 
-    private bool HasAttacked = false;
+    private bool HasAttacked = true; // makes so that minions cant attack instantly
     
     public Board boardRef;
     public Hand playerHand;
@@ -14,6 +14,8 @@ public class Minion : MonoBehaviour // will work similar to card
     public int strength;
     public string minionName;
     public string descriptionString;
+    
+    private bool _highlighted;
     
     [SerializeField] public Text healthText;
     [SerializeField] public Text strengthText;
@@ -35,13 +37,36 @@ public class Minion : MonoBehaviour // will work similar to card
     public virtual void ResetAttack()
     {
         HasAttacked = false;
+        ChangeColour(false);
     }
 
     // private Hand playerHand;
     // Start is called before the first frame update
     public virtual void ButtonResponse()
     {
-        playerHand.HandleMinionClick(this);
+        if (!HasAttacked)
+        {
+            playerHand.HandleMinionClick(this);
+            ChangeColour(true);
+        }
+    }
+
+    public virtual void ChangeColour(bool input)
+    {
+        _highlighted = input;
+        HighlightToggle();
+    }
+
+    protected virtual void HighlightToggle()
+    {
+        if (_highlighted)
+        {
+            gameObject.GetComponent<Image>().color = Color.red;
+        }
+        else
+        {
+            gameObject.GetComponent<Image>().color = Color.white;
+        }
     }
 
     public virtual void DeltaHealth(int delta)
@@ -54,10 +79,11 @@ public class Minion : MonoBehaviour // will work similar to card
         {
             health += delta;
         }
+        ChangeColour(false);
         UpdateTextFields();
     }
 
-    public virtual void Attack(GameObject target)
+    public virtual void Attack(GameObject target) // TODO: move to board
     {
         if (HasAttacked)
         {
@@ -75,7 +101,7 @@ public class Minion : MonoBehaviour // will work similar to card
         {
             playerTargetScript.DeltaHealth(-strength);
         }
-
+        ChangeColour(false);
         HasAttacked = true;
     }
 

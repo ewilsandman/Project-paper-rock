@@ -114,14 +114,14 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
                 AIAttack(minion.gameObject, hostilePlayerChar.gameObject);
             }
         }
-        /*else if (countIcomingDamage() >= friendlyPlayerChar.health)
+        /*else if (countIcomingDamage() >= friendlyPlayerChar.health) TODO
         {
             // be more passive, prioritize healing and defensive cards
         }*/
         else 
         {
             Debug.Log("Committing attack");
-            while (_hostileMinions.Count > 0) 
+            while (_hostileMinions.Count > 0) // while scary, TODO: fix/remove loops
             {
                 if (_friendlyMinions.Count > 0)
                 {
@@ -142,14 +142,14 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
             foreach (Minion minion in _friendlyMinions) // should break if invalid?
             {
                 Debug.Log("No enemy minions left, attacking head");
-                minion.Attack(hostilePlayerChar.gameObject);
+                AIAttack(minion.gameObject, hostilePlayerChar.gameObject);
             }
         }
     }
 
     private void AIAttack(GameObject attacker, GameObject target)
     {
-        boardReference.AddAttacker(attacker);
+        attacker.GetComponent<Minion>().ButtonResponse(); // assuming attacker is always minion or inherits from minion
         boardReference.AddTarget(target);
     }
 
@@ -168,7 +168,7 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
         _currentPlayableCards = sortedCards;
     }
 
-    private void GetBoardConditions() // get after cards are placed,
+    private void GetBoardConditions() //TODO: effectivize
     {
         Debug.Log("Fetching board conditions");
         List<Minion> possibleMinions = new List<Minion>(boardReference.activePlayerMinions);
@@ -178,15 +178,13 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
         }
 
         List<Minion> sortedMinions = new List<Minion>();
-        sortedMinions.Clear(); // possibly not clearing?
+        sortedMinions.Clear();
         if (possibleMinions.Count > 0)
         {
             foreach (Minion minion in possibleMinions)
             {
-                Debug.Log("for each minion");
                 if (minion != null) 
                 {
-                    Debug.Log("null-check passed");
                     if (!minion.CheckAttack())
                     {
                         sortedMinions.Add(minion);

@@ -102,7 +102,7 @@ public class Hand : MonoBehaviour //should be called player but renaming is scar
 
     public void HandleMinionClick(Minion clicked)
     {
-        if (friendly)
+        if (friendly) // checking this here makes it easier for AI to handle
         { 
             board.AddAttacker(clicked.gameObject);
         }

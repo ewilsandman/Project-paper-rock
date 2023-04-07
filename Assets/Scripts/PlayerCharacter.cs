@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -13,6 +14,10 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private Text pileCardsDisplay; // unused
     [FormerlySerializedAs("_pile")] [SerializeField] private Pile pile;
     [FormerlySerializedAs("_board")] [SerializeField] private Board board;
+    [SerializeField]private Text _killText;
+    public Hand hand;
+
+    private bool _highlighted;
 
     // Start is called before the first frame update
     void Start()
@@ -22,18 +27,36 @@ public class PlayerCharacter : MonoBehaviour
 
     public void ButtonResponse()
     {
-        if (!friendly)
+        board.AddTarget(gameObject);
+        //ChangeColour(false);
+    }
+    
+    public void ChangeColour(bool input)
+    {
+        _highlighted = input;
+        HighlightToggle();
+    }
+
+    protected void HighlightToggle()
+    {
+        if (_highlighted)
         {
-            board.AddTarget(gameObject);
+            gameObject.GetComponent<Image>().color = Color.green;
+        }
+        else
+        {
+            gameObject.GetComponent<Image>().color = Color.white;
         }
     }
 
     public void DeltaHealth(int delta)
     {
-        if (health + delta < 0)
+        if (health + delta <= 0)
         {
             Debug.Log("ono I am kill");
-            SceneManager.LoadScene(2);
+           // _killText.enabled = true;
+            //_killText.text = gameObject.name + " Has died, other player wins ";
+            board.stopGame(this);
             // die and mark other player victory
         }
         else

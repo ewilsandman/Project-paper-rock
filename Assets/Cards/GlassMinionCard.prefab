@@ -63,7 +63,7 @@ MonoBehaviour:
     type: 3}
   handRef: {fileID: 0}
   minionName: Glass Minion
-  descriptionString: spikey
+  descriptionString: 
   healthText: {fileID: 8486798630456097218}
   strengthText: {fileID: 2868405335417673551}
   costText: {fileID: 1109390692459822522}

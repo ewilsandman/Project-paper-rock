@@ -31,8 +31,18 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     
     [FormerlySerializedAs("HostileMinionExample")] [SerializeField] private Minion hostileMinionExample;
 
-    [SerializeField] private bool singlePlayer;
-    [SerializeField] private bool hotSeat;
+    [SerializeField]
+    public enum GameMode
+    {
+        over,
+        singleplayer,
+        hotSeat,
+        multiPlayer
+    }
+
+    [SerializeField] public GameMode mode;
+   /* [SerializeField] private bool singlePlayer;
+    [SerializeField] private bool hotSeat;*/
     
     [SerializeField] private float timeLimit = 120;
     [SerializeField] private int turnsElapsed;
@@ -45,14 +55,28 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     [SerializeField] private float swapTimeLimit;
     [SerializeField] private GameObject blueBackground;
     [SerializeField] private GameObject orangeBackground;
+
+    private BaseCard _activeSpell;
     
-    
-    
+    [SerializeField]private Text _killText;
+
     // Start is called before the first frame update
     void Start()
     {
         activePlayerMinions = new List<Minion>();
         passivePlayerMinions = new List<Minion>();
+        //Time.timeScale = 0;
+        _killText.enabled = false;
+    }
+
+    public void stopGame( PlayerCharacter hasDied)
+    {
+        blocker.SetActive(true); // not working????
+        _killText.enabled = true;
+        _killText.text = hasDied.hand.gameObject.name + " Has lost, other player wins!";
+        turnTimer.text = "";
+        mode = GameMode.over;
+        //Time.timeScale = 0;
     }
 
     public void EndTurn()
@@ -85,11 +109,11 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         else
         {
             Debug.Log("next turn");
-            if (hotSeat)
+            if (mode == GameMode.hotSeat)
             {
                 StartSwap();
             }
-            else if (singlePlayer)
+            else if (mode == GameMode.singleplayer)
             {
                 Debug.Log("Ai turn swap");
                 activePlayer = activePlayer == player1Hand ? player2Hand : player1Hand;
@@ -111,6 +135,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
             activePlayerMinions = new List<Minion>(passivePlayerMinions);
             passivePlayerMinions = new List<Minion>(tempMinions);
         }
+        _activeSpell = null;
         StartTurn();
         turnsElapsed++;
     }
@@ -139,11 +164,17 @@ public class Board : MonoBehaviour // this will handle enemy attacks
 
     void FixedUpdate()
     {
+        if (mode == GameMode.over)
+        {
+            turnTimer.text = "Game over";
+            timeThisTurn = 0;
+            return;
+        }
 
         if (timeThisTurn > timeLimit)
         {
             Debug.Log("Times up"); 
-            //endTurn();
+            EndTurn();
         }
         else // gives you one extra frame but whatever
         { 
@@ -158,7 +189,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         turnTimer.text = "Time left:" + timeToDisplay.ToString();
         
 
-        if (!singlePlayer)
+        if (mode == GameMode.hotSeat)
         {
             if (_waitingToSwap)
             {
@@ -189,22 +220,102 @@ public class Board : MonoBehaviour // this will handle enemy attacks
 
     public void AddAttacker(GameObject input)
     {
-        Debug.Log("attacker added");
-        _attackerRef = input;
-        HandleAttack();
+        if (_activeSpell != null)
+        {
+            SpellAction(_activeSpell, input);
+        }
+        else
+        {
+            if (_attackerRef)
+            {
+                _attackerRef.TryGetComponent<Minion>(out Minion minion);
+                minion.ChangeColour(false);
+            }
+            Debug.Log("attacker added");
+            _attackerRef = input;
+            HandleAttack();
+            if (_activeSpell != null)
+            {
+                _activeSpell.ChangeColour(false);
+            }
+            _activeSpell = null; 
+        }
     }
     public void AddTarget(GameObject input)
     {
-        Debug.Log("target added");
-        _targetRef = input;
-        HandleAttack();
+        if (_activeSpell != null)
+        {
+            SpellAction(_activeSpell, input);
+        }
+        else 
+        {
+            if (_targetRef)
+            {
+                _targetRef.TryGetComponent<Minion>(out Minion minion);
+                minion.ChangeColour(false);
+            }
+            
+            Debug.Log("target added");
+            _targetRef = input;
+            HandleAttack();
+            if (_activeSpell != null)
+            {
+                _activeSpell.ChangeColour(false);
+            }
+            _activeSpell = null;
+        }
+    }
+
+    private void SpellAction(BaseCard spell, GameObject target)
+    {
+        if (spell.handRef.playerFunds >= spell.cost)
+        {
+            spell.handRef.UpdateFunds(-spell.cost);
+            Minion minionComponent = target.GetComponent<Minion>();
+            
+            if (spell.strength > 0)
+            {
+                if (minionComponent != null)
+                {
+                    minionComponent.DeltaHealth(-spell.strength);
+                }
+                else
+                {
+                    target.GetComponent<PlayerCharacter>().DeltaHealth(-spell.strength);
+                }
+
+            }
+            else // assume healing
+            {
+                if (minionComponent != null)
+                {
+                    minionComponent.DeltaHealth(spell.health);
+                }
+                else
+                {
+                    target.GetComponent<PlayerCharacter>().DeltaHealth(spell.health);
+                }
+            }
+
+            if (minionComponent != null)
+            {
+                minionComponent.ChangeColour(false);
+            }
+
+            Destroy(spell.gameObject);
+        }
     }
 
     private void HandleAttack()
     {
+        
         if (_targetRef != null & _attackerRef != null)
         {
-           
+            if (_targetRef.GetComponent<Minion>() as ShieldMinion)
+            {
+                
+            }
+
             if (_targetRef.TryGetComponent(out ShieldMinion shieldminionComponent)) // check to see if target is shieldMinion
             {
                 
@@ -330,11 +441,19 @@ public class Board : MonoBehaviour // this will handle enemy attacks
             }
             return true;
         }
-        else if (false)
+        else // assuming only spells and minions
         {
-          //TODO: other types of cards   
+         HandleSpellCard(toHandle);
         }
         return false;
+    }
+
+    private void HandleSpellCard(BaseCard input)
+    {
+        _activeSpell = input;
+        _activeSpell.ChangeColour(true);
+        _targetRef = null;
+        _attackerRef = null;
     }
 
     public void SwapMinons()
