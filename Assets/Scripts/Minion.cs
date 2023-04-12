@@ -10,7 +10,6 @@ public class Minion : MonoBehaviour // will work similar to card
     
     public Board boardRef;
     public Hand playerHand;
-    public int health;
     public int strength;
     public string minionName;
     public string descriptionString;
@@ -21,6 +20,8 @@ public class Minion : MonoBehaviour // will work similar to card
     [SerializeField] public Text strengthText;
     [SerializeField] public Text nameText;
     [SerializeField] public Text describeText;
+    [SerializeField] public Image image;
+    [SerializeField] public Targetable healthPool;
 
     protected virtual void Start()
     {
@@ -61,60 +62,45 @@ public class Minion : MonoBehaviour // will work similar to card
     {
         if (_highlighted)
         {
-            gameObject.GetComponent<Image>().color = Color.red;
+            image.color = Color.red;
         }
         else
         {
-            gameObject.GetComponent<Image>().color = Color.white;
+            image.color = Color.white;
         }
     }
+    
 
-    public virtual void DeltaHealth(int delta)
-    {
-        if (health + delta <= 0)
-        {
-            Kill();
-        }
-        else
-        {
-            health += delta;
-        }
-        ChangeColour(false);
-        UpdateTextFields();
-    }
-
-    public virtual void Attack(GameObject target) // TODO: move to board
+    public virtual void Attack(Targetable target)
     {
         if (HasAttacked)
         {
             return;
         }
         Debug.Log("attack done");
-        Minion miniontargetScript;
-        PlayerCharacter playerTargetScript;
-        if (target.TryGetComponent(out miniontargetScript)) // this could be solved by having a more general "healthComponent"
+               
+        if (target) // this could be solved by having a more general "healthComponent"
         {
-            miniontargetScript.DeltaHealth(-strength);
-            DeltaHealth(-miniontargetScript.strength);
+            target.DeltaHealth(-strength);
+            if (target.TryGetComponent( out Minion minion))
+            {
+                healthPool.DeltaHealth(-minion.strength);
+            }
         }
-        else if (target.TryGetComponent(out playerTargetScript))
-        {
-            playerTargetScript.DeltaHealth(-strength);
-        }
-        ChangeColour(false);
         HasAttacked = true;
     }
 
-    protected virtual void Kill() // this would handle killing any "shadow" in multiplayer as well
+    public virtual void Kill() // this would handle killing any "shadow" in multiplayer as well
     {
         Debug.Log("starting kill");
         boardRef.RemoveMinon(gameObject);
     }
-    protected virtual void UpdateTextFields()
-    {   
-        healthText.text = health.ToString();
+    public virtual void UpdateTextFields()
+    {
+        healthText.text = healthPool.ReturnHealth().ToString();
         strengthText.text = strength.ToString();
         nameText.text = minionName; // unlikely to change
         describeText.text = descriptionString;
+        ChangeColour(false);
     }
 }

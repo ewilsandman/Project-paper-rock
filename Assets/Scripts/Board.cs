@@ -20,8 +20,8 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     public Hand activePlayer;
     private Transform _activePlayerMinionPositions;
 
-    private GameObject _targetRef;
-    private GameObject _attackerRef;
+    private Targetable _targetRef;
+    private Minion _attackerRef;
 
     [FormerlySerializedAs("playerMinions")] public List<Minion> activePlayerMinions;
     [FormerlySerializedAs("playerMinionPositions")] public Transform player1MinionPositions; // cursed way of doing things
@@ -218,11 +218,11 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         }
     }
 
-    public void AddAttacker(GameObject input)
+    public void AddAttacker(Minion input)
     {
         if (_activeSpell != null)
         {
-            SpellAction(_activeSpell, input);
+            SpellAction(_activeSpell, input.GetComponent<Targetable>()); // hacky
         }
         else
         {
@@ -241,7 +241,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
             _activeSpell = null; 
         }
     }
-    public void AddTarget(GameObject input)
+    public void AddTarget(Targetable input)
     {
         if (_activeSpell != null)
         {
@@ -266,43 +266,24 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         }
     }
 
-    private void SpellAction(BaseCard spell, GameObject target)
+    private void SpellAction(BaseCard spell, Targetable target)
     {
         if (spell.handRef.playerFunds >= spell.cost)
         {
             spell.handRef.UpdateFunds(-spell.cost);
-            Minion minionComponent = target.GetComponent<Minion>();
-            
-            if (spell.strength > 0)
-            {
-                if (minionComponent != null)
-                {
-                    minionComponent.DeltaHealth(-spell.strength);
-                }
-                else
-                {
-                    target.GetComponent<PlayerCharacter>().DeltaHealth(-spell.strength);
-                }
+          target.GetComponent<Minion>();
 
-            }
-            else // assume healing
-            {
-                if (minionComponent != null)
-                {
-                    minionComponent.DeltaHealth(spell.health);
-                }
-                else
-                {
-                    target.GetComponent<PlayerCharacter>().DeltaHealth(spell.health);
-                }
-            }
+          if (spell.strength > 0)
+          {
+              target.DeltaHealth(-spell.strength);
+          }
 
-            if (minionComponent != null)
-            {
-                minionComponent.ChangeColour(false);
-            }
+          else // assume healing
+          { 
+              target.DeltaHealth(spell.health);
+          }
 
-            Destroy(spell.gameObject);
+          Destroy(spell.gameObject);
         }
     }
 
@@ -328,7 +309,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
                     {
                         minion.TryGetComponent(out shieldminionComponent); // if there is another minion with ShieldMinion it will be targeted instead
                         {
-                            _targetRef = minion.gameObject;
+                            _targetRef = minion.GetComponent<Targetable>();
                             break;
                         }
                     }
@@ -363,7 +344,8 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     public void AddMinion(Minion template, int health, int strength, string minionName,string describeString, bool friendly) // could be remade to handle multiple spawns
     {
         Minion toBeCreated = Instantiate(template, transform.parent);
-        toBeCreated.health = health;
+        toBeCreated.healthPool.maxHealth = health;
+        toBeCreated.healthPool.setup();
         toBeCreated.strength = strength;
         toBeCreated.minionName = minionName;
         toBeCreated.descriptionString = describeString;

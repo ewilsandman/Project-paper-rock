@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2163.2402, g: 2270.5312, b: 3304.4883, a: 1}
+  m_IndirectSpecularColor: {r: 2157.961, g: 2263, b: 3287.9062, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1085,6 +1085,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player2
       objectReference: {fileID: 0}
+    - target: {fileID: 3009265954894136689, guid: d661acff755d8d749b9b1bb1fbdad6e1,
+        type: 3}
+      propertyPath: playerCharacterRef
+      value: 
+      objectReference: {fileID: 1613275506}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d661acff755d8d749b9b1bb1fbdad6e1, type: 3}
 --- !u!4 &609989573 stripped
@@ -1263,6 +1268,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07d7dae1497d8b3418b801558b58cf1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &788043388 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3009265954894136689, guid: d661acff755d8d749b9b1bb1fbdad6e1,
+    type: 3}
+  m_PrefabInstance: {fileID: 609989572}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed4e345fe343f9e49adb1e1122512569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &833822026
@@ -2495,15 +2512,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deployPoints: 5
-  health: 10
   friendly: 0
   deployPointDisplay: {fileID: 833822028}
   healthPointDisplay: {fileID: 96422246}
   pileCardsDisplay: {fileID: 1896882935}
   pile: {fileID: 788043387}
   board: {fileID: 1283085366}
-  _killText: {fileID: 0}
+  killText: {fileID: 0}
   hand: {fileID: 0}
+  image: {fileID: 0}
+  healthPool: {fileID: 788043388}
 --- !u!114 &1613275507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2884,6 +2902,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07d7dae1497d8b3418b801558b58cf1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1827073000 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3009265954894136689, guid: d661acff755d8d749b9b1bb1fbdad6e1,
+    type: 3}
+  m_PrefabInstance: {fileID: 2402998147330103244}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed4e345fe343f9e49adb1e1122512569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1896882933
@@ -3504,6 +3534,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player1
       objectReference: {fileID: 0}
+    - target: {fileID: 3009265954894136689, guid: d661acff755d8d749b9b1bb1fbdad6e1,
+        type: 3}
+      propertyPath: playerCharacterRef
+      value: 
+      objectReference: {fileID: 1043240213}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d661acff755d8d749b9b1bb1fbdad6e1, type: 3}
 --- !u!1001 &6713691956550784307
@@ -3553,6 +3588,11 @@ PrefabInstance:
       propertyPath: friendly
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6713691957324267558, guid: 24eea7e942a74d54fa732d379f417f52,
+        type: 3}
+      propertyPath: healthPool
+      value: 
+      objectReference: {fileID: 1827073000}
     - target: {fileID: 6713691957324267558, guid: 24eea7e942a74d54fa732d379f417f52,
         type: 3}
       propertyPath: pileCardsDisplay

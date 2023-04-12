@@ -106,7 +106,7 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
     private void MakeAttacks()
     {
         GetBoardConditions();
-        if (countOutgoingDamage() >= hostilePlayerChar.health) // could be toggled to make a less ruthless AI
+        if (countOutgoingDamage() >= hostilePlayerChar.healthPool.ReturnHealth()) // could be toggled to make a less ruthless AI
         {   // "going for the throat"
             Debug.Log("Can kill, will do so");
             foreach (Minion minion in _friendlyMinions) // should break if invalid?
@@ -150,7 +150,7 @@ public class EasyAi : MonoBehaviour // might rename to just AI and use enum for 
     private void AIAttack(GameObject attacker, GameObject target)
     {
         attacker.GetComponent<Minion>().ButtonResponse(); // assuming attacker is always minion or inherits from minion
-        boardReference.AddTarget(target);
+        boardReference.AddTarget(target.GetComponent<Targetable>());
     }
 
     private void GetCardConditions() // condition in hand

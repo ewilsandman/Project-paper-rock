@@ -14,24 +14,13 @@ public class ShieldMinion : Minion
         ResetAttack();
     }
     
-    public override void DeltaHealth(int delta)
-    {
-        if (health + delta <= 0)
-        {
-            Kill();
-        }
-        else
-        {
-            health += delta;
-        }
-        UpdateTextFields();
-    }
 
-    protected override void UpdateTextFields()
+    public override void UpdateTextFields()
     {
-        healthText.text = health.ToString();
+        healthText.text = healthPool.ToString();
         strengthText.text = strength.ToString();
         describeText.text = "Shielding";
         nameText.text = minionName; // unlikely to change
+        ChangeColour(false);
     }
 }

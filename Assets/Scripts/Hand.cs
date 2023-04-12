@@ -47,7 +47,7 @@ public class Hand : MonoBehaviour //should be called player but renaming is scar
         BaseCard template = pile.PileToHand();
         if (template == null) // if no more cards exist
         {
-            playerCharacter.DeltaHealth(-1);
+            playerCharacter.healthPool.DeltaHealth(-1);
         }
         else
         {        
@@ -104,11 +104,11 @@ public class Hand : MonoBehaviour //should be called player but renaming is scar
     {
         if (friendly) // checking this here makes it easier for AI to handle
         { 
-            board.AddAttacker(clicked.gameObject);
+            board.AddAttacker(clicked);
         }
         else
         { 
-            board.AddTarget(clicked.gameObject);
+            board.AddTarget(clicked.healthPool);
         }
         
     }

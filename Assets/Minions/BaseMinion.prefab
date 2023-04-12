@@ -173,6 +173,7 @@ GameObject:
   - component: {fileID: 8344191543353226758}
   - component: {fileID: 4648153001344739593}
   - component: {fileID: 6391427145400819769}
+  - component: {fileID: 9195755923628690521}
   m_Layer: 0
   m_Name: BaseMinion
   m_TagString: Untagged
@@ -218,7 +219,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardRef: {fileID: 0}
   playerHand: {fileID: 0}
-  health: 0
   strength: 0
   minionName: Base Minion
   descriptionString: 
@@ -226,6 +226,8 @@ MonoBehaviour:
   strengthText: {fileID: 5307818916720251840}
   nameText: {fileID: 1652778140969204158}
   describeText: {fileID: 8750045195334282752}
+  image: {fileID: 4648153001344739593}
+  healthPool: {fileID: 9195755923628690521}
 --- !u!222 &8344191543353226758
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -320,6 +322,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &9195755923628690521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303190162502371047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed4e345fe343f9e49adb1e1122512569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 0
+  minionRef: {fileID: 2303190162502371044}
+  playerCharacterRef: {fileID: 0}
 --- !u!1 &8631616780817865678
 GameObject:
   m_ObjectHideFlags: 0
