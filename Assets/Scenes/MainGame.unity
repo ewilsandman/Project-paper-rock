@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2157.961, g: 2263, b: 3287.9062, a: 1}
+  m_IndirectSpecularColor: {r: 2163.2266, g: 2270.5273, b: 3304.4844, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1085,11 +1085,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player2
       objectReference: {fileID: 0}
-    - target: {fileID: 3009265954894136689, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: playerCharacterRef
-      value: 
-      objectReference: {fileID: 1613275506}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d661acff755d8d749b9b1bb1fbdad6e1, type: 3}
 --- !u!4 &609989573 stripped
@@ -1268,18 +1263,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07d7dae1497d8b3418b801558b58cf1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &788043388 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3009265954894136689, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-    type: 3}
-  m_PrefabInstance: {fileID: 609989572}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed4e345fe343f9e49adb1e1122512569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &833822026
@@ -1502,6 +1485,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1043240218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969264158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed4e345fe343f9e49adb1e1122512569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 0
+  maxHealth: 10
+  minionRef: {fileID: 0}
+  playerCharacterRef: {fileID: 1043240213}
 --- !u!1 &1156327621
 GameObject:
   m_ObjectHideFlags: 0
@@ -2013,6 +2012,7 @@ MonoBehaviour:
   blueBackground: {fileID: 1565718774}
   orangeBackground: {fileID: 9841}
   _killText: {fileID: 1224675431}
+  paused: 0
 --- !u!1 &1359745355
 GameObject:
   m_ObjectHideFlags: 0
@@ -2049,7 +2049,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 360.5, y: 60.4}
+  m_AnchoredPosition: {x: 316, y: 60.4}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1359745357
@@ -2468,6 +2468,7 @@ GameObject:
   - component: {fileID: 1613275507}
   - component: {fileID: 1613275506}
   - component: {fileID: 1613275509}
+  - component: {fileID: 1613275510}
   m_Layer: 5
   m_Name: HostileChar
   m_TagString: Untagged
@@ -2518,10 +2519,10 @@ MonoBehaviour:
   pileCardsDisplay: {fileID: 1896882935}
   pile: {fileID: 788043387}
   board: {fileID: 1283085366}
-  killText: {fileID: 0}
-  hand: {fileID: 0}
-  image: {fileID: 0}
-  healthPool: {fileID: 788043388}
+  killText: {fileID: 1224675431}
+  hand: {fileID: 609989576}
+  image: {fileID: 1613275507}
+  healthPool: {fileID: 1613275510}
 --- !u!114 &1613275507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2616,6 +2617,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1613275510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613275504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed4e345fe343f9e49adb1e1122512569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 0
+  maxHealth: 10
+  minionRef: {fileID: 0}
+  playerCharacterRef: {fileID: 1613275506}
 --- !u!114 &1769169722 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6713691958488176669, guid: 24eea7e942a74d54fa732d379f417f52,
@@ -2902,18 +2919,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07d7dae1497d8b3418b801558b58cf1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1827073000 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3009265954894136689, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-    type: 3}
-  m_PrefabInstance: {fileID: 2402998147330103244}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed4e345fe343f9e49adb1e1122512569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1896882933
@@ -3534,11 +3539,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player1
       objectReference: {fileID: 0}
-    - target: {fileID: 3009265954894136689, guid: d661acff755d8d749b9b1bb1fbdad6e1,
-        type: 3}
-      propertyPath: playerCharacterRef
-      value: 
-      objectReference: {fileID: 1043240213}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d661acff755d8d749b9b1bb1fbdad6e1, type: 3}
 --- !u!1001 &6713691956550784307
@@ -3580,6 +3580,11 @@ PrefabInstance:
       objectReference: {fileID: 1283085366}
     - target: {fileID: 6713691957324267558, guid: 24eea7e942a74d54fa732d379f417f52,
         type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 1043240214}
+    - target: {fileID: 6713691957324267558, guid: 24eea7e942a74d54fa732d379f417f52,
+        type: 3}
       propertyPath: _board
       value: 
       objectReference: {fileID: 1283085366}
@@ -3590,9 +3595,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6713691957324267558, guid: 24eea7e942a74d54fa732d379f417f52,
         type: 3}
+      propertyPath: killText
+      value: 
+      objectReference: {fileID: 1224675431}
+    - target: {fileID: 6713691957324267558, guid: 24eea7e942a74d54fa732d379f417f52,
+        type: 3}
       propertyPath: healthPool
       value: 
-      objectReference: {fileID: 1827073000}
+      objectReference: {fileID: 1043240218}
     - target: {fileID: 6713691957324267558, guid: 24eea7e942a74d54fa732d379f417f52,
         type: 3}
       propertyPath: pileCardsDisplay

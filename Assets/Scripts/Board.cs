@@ -37,7 +37,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         over,
         singleplayer,
         hotSeat,
-        multiPlayer
+        multiPlayer,
     }
 
     [SerializeField] public GameMode mode;
@@ -60,6 +60,8 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     
     [SerializeField]private Text _killText;
 
+    [SerializeField] private bool paused;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -67,6 +69,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         passivePlayerMinions = new List<Minion>();
         //Time.timeScale = 0;
         _killText.enabled = false;
+        paused = true;
     }
 
     public void stopGame( PlayerCharacter hasDied)
@@ -81,6 +84,11 @@ public class Board : MonoBehaviour // this will handle enemy attacks
 
     public void EndTurn()
     {
+        if (mode == GameMode.over)
+        {
+            return;
+        }
+        
         if (activePlayer)
         {
             activePlayer.friendly = false;
@@ -142,6 +150,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
 
     private void StartTurn()
     {
+        paused = false;
         activePlayer.friendly = true;
         Debug.Log("now player" + activePlayer);
         timeThisTurn = 0;
@@ -167,6 +176,13 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         if (mode == GameMode.over)
         {
             turnTimer.text = "Game over";
+            timeThisTurn = 0;
+            return;
+        }
+
+        if (paused)
+        {
+            turnTimer.text = "Press the arrow to start";
             timeThisTurn = 0;
             return;
         }
@@ -251,7 +267,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         {
             if (_targetRef)
             {
-                _targetRef.TryGetComponent<Minion>(out Minion minion);
+                _targetRef.gameObject.TryGetComponent<Minion>(out Minion minion);
                 minion.ChangeColour(false);
             }
             

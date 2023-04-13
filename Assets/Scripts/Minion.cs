@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Minion : MonoBehaviour // will work similar to card
 {
 
-    private bool HasAttacked = true; // makes so that minions cant attack instantly
+    [SerializeField] private bool hasAttacked = true; // makes so that minions cant attack instantly
     
     public Board boardRef;
     public Hand playerHand;
@@ -31,13 +31,13 @@ public class Minion : MonoBehaviour // will work similar to card
 
     public virtual bool CheckAttack()
     {
-        return HasAttacked;
+        return hasAttacked;
     }
     
 
     public virtual void ResetAttack()
     {
-        HasAttacked = false;
+        hasAttacked = false;
         ChangeColour(false);
     }
 
@@ -45,7 +45,7 @@ public class Minion : MonoBehaviour // will work similar to card
     // Start is called before the first frame update
     public virtual void ButtonResponse()
     {
-        if (!HasAttacked)
+        if (!hasAttacked)
         {
             playerHand.HandleMinionClick(this);
             ChangeColour(true);
@@ -73,7 +73,7 @@ public class Minion : MonoBehaviour // will work similar to card
 
     public virtual void Attack(Targetable target)
     {
-        if (HasAttacked)
+        if (hasAttacked)
         {
             return;
         }
@@ -87,7 +87,7 @@ public class Minion : MonoBehaviour // will work similar to card
                 healthPool.DeltaHealth(-minion.strength);
             }
         }
-        HasAttacked = true;
+        hasAttacked = true;
     }
 
     public virtual void Kill() // this would handle killing any "shadow" in multiplayer as well

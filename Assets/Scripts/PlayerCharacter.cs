@@ -25,8 +25,8 @@ public class PlayerCharacter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UpdateTextFields();
         healthPool.setup();
+        UpdateTextFields();
     }
 
     public void ButtonResponse()

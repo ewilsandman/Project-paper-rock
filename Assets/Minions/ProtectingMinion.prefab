@@ -335,7 +335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 0
-  minionRef: {fileID: 0}
+  minionRef: {fileID: 449146386102885738}
   playerCharacterRef: {fileID: 0}
 --- !u!1 &8631616780817865678
 GameObject:

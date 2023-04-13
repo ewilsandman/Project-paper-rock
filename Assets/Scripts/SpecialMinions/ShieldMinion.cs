@@ -17,7 +17,7 @@ public class ShieldMinion : Minion
 
     public override void UpdateTextFields()
     {
-        healthText.text = healthPool.ToString();
+        healthText.text = healthPool.ReturnHealth().ToString();
         strengthText.text = strength.ToString();
         describeText.text = "Shielding";
         nameText.text = minionName; // unlikely to change

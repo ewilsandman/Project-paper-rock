@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Targetable : MonoBehaviour
 {
-    private int _health;
+    [SerializeField] private int _health;
     public int maxHealth;
     private int _resistance;
     [SerializeField] private Minion minionRef;
@@ -23,6 +23,15 @@ public class Targetable : MonoBehaviour
         else
         {
             _health += delta;
+        }
+
+        if (minionRef != null)
+        {
+            minionRef.UpdateTextFields();
+        }
+        else
+        {
+            playerCharacterRef.UpdateTextFields();
         }
     }
 
