@@ -20,7 +20,7 @@ public class Hand : MonoBehaviour //should be called player but renaming is scar
     [SerializeField] private bool aiPlayer = false; // failsafe
     [SerializeField] private EasyAi aiRef;
 
-    [FormerlySerializedAs("Friendly")] public bool friendly;
+    [FormerlySerializedAs("friendly")] [FormerlySerializedAs("Friendly")] public bool active;
     
     
     // Start is called before the first frame update
@@ -31,7 +31,7 @@ public class Hand : MonoBehaviour //should be called player but renaming is scar
             aiRef.Setup(board, this, playerCharacter, otherCharacter);
         }
         cardsInHand = new List<BaseCard>();
-        DrawCards();
+        DrawCards(maxCards);
     }
 
     public void StartTurn() // mostly for AI reasons
@@ -102,7 +102,7 @@ public class Hand : MonoBehaviour //should be called player but renaming is scar
 
     public void HandleMinionClick(Minion clicked)
     {
-        if (friendly) // checking this here makes it easier for AI to handle
+        if (active) // checking this here makes it easier for AI to handle
         { 
             board.AddAttacker(clicked);
         }
@@ -113,14 +113,21 @@ public class Hand : MonoBehaviour //should be called player but renaming is scar
         
     }
 
-    public void DrawCards()
+    public void DrawCards( float amount)
     {
         if (cardsInHand.Count < maxCards) // TODO: change to limit pickups
         {
             Debug.Log("Getting cards");
-            for (int i = cardsInHand.Count; i < maxCards; i++)
+            for (int i = 0; i < amount; i++)
             {
-                GetCardToHand();
+                if (cardsInHand.Count + 1 > maxCards)
+                {
+                    break;
+                }
+                else
+                {
+                    GetCardToHand();
+                }
             }
             CardPositions();
         }
@@ -142,10 +149,10 @@ public class Hand : MonoBehaviour //should be called player but renaming is scar
 
     public void SwapHand(Hand otherHand) // done by active player before turn swaps
     {
-        otherHand.friendly = true;
+        otherHand.active = true;
         (cardsInHand, otherHand.cardsInHand) = (otherHand.cardsInHand, cardsInHand); // no Idea how this works
         otherHand.CardPositions();
-        friendly = false;
+        active = false;
         CardPositions();
     }
 

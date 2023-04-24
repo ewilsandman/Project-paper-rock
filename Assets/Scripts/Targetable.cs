@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Targetable : MonoBehaviour
-{
-    [SerializeField] private int _health;
+{ 
+    [SerializeField] private int health;
     public int maxHealth;
     private int _resistance;
     [SerializeField] private Minion minionRef;
@@ -12,17 +10,17 @@ public class Targetable : MonoBehaviour
 
     public void DeltaHealth(int delta)
     {
-        if (_health + delta <= 0)
+        if (health + delta <= 0)
         {
             CallKill();
         }
-        else if ( _health + delta > maxHealth)
+        else if ( health + delta > maxHealth)
         {
-            _health = maxHealth;
+            health = maxHealth;
         }
         else
         {
-            _health += delta;
+            health += delta;
         }
 
         if (minionRef != null)
@@ -35,14 +33,14 @@ public class Targetable : MonoBehaviour
         }
     }
 
-    public void setup()
+    public void Setup()
     {
-        _health = maxHealth;
+        health = maxHealth;
     }
 
     public int ReturnHealth()
     {
-        return _health;
+        return health;
     }
 
     private void CallKill()

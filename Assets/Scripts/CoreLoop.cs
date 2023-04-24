@@ -35,7 +35,7 @@ public class CoreLoop : MonoBehaviour // UNUSED
         turnActive = true;
         if (turnsElapsed >0)
         { 
-            playerHand.DrawCards();
+            playerHand.DrawCards(1);
         }
         playerHand.ResetFunds();
         blocker.SetActive(false);

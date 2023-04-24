@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BaseCard : MonoBehaviour // particularly special cards will have additional scripts and tags
@@ -27,11 +25,11 @@ public class BaseCard : MonoBehaviour // particularly special cards will have ad
 
     private void OnMouseOver() // TODO:visualize that player can/cant deploy card
     {
-        if (handRef.friendly) // active turn check
+        if (handRef.active) // active turn check
         {
             if (handRef.playerFunds >= cost)
             {
-                Debug.Log("Yep you can play this card" + gameObject.name);
+                //Debug.Log("Yep you can play this card" + gameObject.name);
                 _glowLight = true;
             }
         }

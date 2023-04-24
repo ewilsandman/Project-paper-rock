@@ -1,6 +1,4 @@
-using System.Net.Mime;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Minion : MonoBehaviour // will work similar to card
@@ -45,11 +43,8 @@ public class Minion : MonoBehaviour // will work similar to card
     // Start is called before the first frame update
     public virtual void ButtonResponse()
     {
-        if (!hasAttacked)
-        {
-            playerHand.HandleMinionClick(this);
-            ChangeColour(true);
-        }
+        playerHand.HandleMinionClick(this);
+        ChangeColour(true);
     }
 
     public virtual void ChangeColour(bool input)

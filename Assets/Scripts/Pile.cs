@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Pile : MonoBehaviour
 {
-    [SerializeField] private List<BaseCard> possibleCards; //TODO: make a system to customize deck
+    [SerializeField] private List<BaseCard> possibleCards; 
     private List<BaseCard> _pileCards;
     private bool PileCreated = false;
     private int maxPile = 30;

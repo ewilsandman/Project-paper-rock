@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -37,7 +35,6 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         over,
         singleplayer,
         hotSeat,
-        multiPlayer,
     }
 
     [SerializeField] public GameMode mode;
@@ -91,7 +88,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         
         if (activePlayer)
         {
-            activePlayer.friendly = false;
+            activePlayer.active = false;
         }
         timeThisTurn = 0;
         if (turnsElapsed == 0)
@@ -151,12 +148,12 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     private void StartTurn()
     {
         paused = false;
-        activePlayer.friendly = true;
+        activePlayer.active = true;
         Debug.Log("now player" + activePlayer);
         timeThisTurn = 0;
         _attackerRef = null;
         _targetRef = null;
-        activePlayer.DrawCards();
+        activePlayer.DrawCards(1);
         activePlayer.ResetFunds();
         blocker.SetActive(false);
         activePlayer.StartTurn(); // Activates AI if ai controlled
@@ -361,7 +358,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     {
         Minion toBeCreated = Instantiate(template, transform.parent);
         toBeCreated.healthPool.maxHealth = health;
-        toBeCreated.healthPool.setup();
+        toBeCreated.healthPool.Setup();
         toBeCreated.strength = strength;
         toBeCreated.minionName = minionName;
         toBeCreated.descriptionString = describeString;
@@ -431,11 +428,10 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     {
         if (toHandle.minionSpawning)
         {
-            AddMinion(toHandle.minionRef, toHandle.health,toHandle.strength, toHandle.minionName, toHandle.descriptionString,from.friendly);
+            AddMinion(toHandle.minionRef, toHandle.health,toHandle.strength, toHandle.minionName, toHandle.descriptionString,from.active);
             from.UpdateFunds(-toHandle.cost);
-            if (from.friendly)
+            if (from.active)
             {
-                //TODO: send to other player in multiplayer to add minion from 
             }
             return true;
         }
