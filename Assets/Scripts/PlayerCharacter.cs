@@ -13,6 +13,8 @@ public class PlayerCharacter : MonoBehaviour
     [FormerlySerializedAs("_pile")] [SerializeField] private Pile pile;
     [FormerlySerializedAs("_board")] [SerializeField] private Board board;
     [FormerlySerializedAs("_killText")] [SerializeField]private Text killText;
+
+    [SerializeField] private Transform effectPosition;
     public Hand hand;
 
     private bool _highlighted;

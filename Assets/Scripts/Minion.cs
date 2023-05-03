@@ -11,6 +11,7 @@ public class Minion : MonoBehaviour // will work similar to card
     public int strength;
     public string minionName;
     public string descriptionString;
+    public ParticleManangerScript particleScript;
     
     private bool _highlighted;
     
@@ -72,15 +73,15 @@ public class Minion : MonoBehaviour // will work similar to card
         {
             return;
         }
-        Debug.Log("attack done");
-               
-        if (target) // this could be solved by having a more general "healthComponent"
+
+        if (target)
         {
             target.DeltaHealth(-strength);
             if (target.TryGetComponent( out Minion minion))
             {
                 healthPool.DeltaHealth(-minion.strength);
             }
+            particleScript.ParticlesToTarget(transform.position, target.transform.position);
         }
         hasAttacked = true;
     }

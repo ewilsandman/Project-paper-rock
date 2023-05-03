@@ -10,7 +10,7 @@ public class Hand : MonoBehaviour //should be called player but renaming is scar
     public PlayerCharacter playerCharacter;
     [SerializeField] private PlayerCharacter otherCharacter; // AI reasons
     
-   // [FormerlySerializedAs("TurnHandler")] [SerializeField] private CoreLoop turnHandler;
+    // [FormerlySerializedAs("TurnHandler")] [SerializeField] private CoreLoop turnHandler;
     [FormerlySerializedAs("_playerFunds")] public int playerFunds;
     [FormerlySerializedAs("BaseFunds")] [SerializeField] private int baseFunds;
     public Pile pile;

@@ -16,29 +16,24 @@ public class BaseCard : MonoBehaviour // particularly special cards will have ad
     [SerializeField] private Text nameText;
     [SerializeField] private Text describeText;
 
+    [SerializeField] private GameObject effectObject;
+
     private bool _highlighted;
-    private bool _glowLight;
 
     public int health; // these could change in hand
     public int strength; //
     public int cost;
 
-    private void OnMouseOver() // TODO:visualize that player can/cant deploy card
+    /*private void OnMouseOver()
     {
         if (handRef.active) // active turn check
         {
             if (handRef.playerFunds >= cost)
             {
                 //Debug.Log("Yep you can play this card" + gameObject.name);
-                _glowLight = true;
             }
         }
-    }
-
-    private void OnMouseExit()
-    {
-        _glowLight = false;
-    }
+    }*/
     public virtual void ChangeColour(bool input)
     {
         _highlighted = input;

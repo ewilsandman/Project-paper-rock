@@ -29,7 +29,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
     
     [FormerlySerializedAs("HostileMinionExample")] [SerializeField] private Minion hostileMinionExample;
 
-    [SerializeField]
+    [SerializeField] private ParticleManangerScript particleManangerScript;
     public enum GameMode
     {
         over,
@@ -289,12 +289,14 @@ public class Board : MonoBehaviour // this will handle enemy attacks
           if (spell.strength > 0)
           {
               target.DeltaHealth(-spell.strength);
+              particleManangerScript.ParticlesToTarget(spell.transform.position, target.transform.position);
           }
 
           else // assume healing
           { 
               target.DeltaHealth(spell.health);
           }
+          
 
           Destroy(spell.gameObject);
         }
@@ -354,7 +356,7 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         return false;
     }
 
-    public void AddMinion(Minion template, int health, int strength, string minionName,string describeString, bool friendly) // could be remade to handle multiple spawns
+    public void AddMinion(Minion template, int health, int strength, string minionName, string describeString, bool friendly) // could be remade to handle multiple spawns
     {
         Minion toBeCreated = Instantiate(template, transform.parent);
         toBeCreated.healthPool.maxHealth = health;
@@ -364,6 +366,8 @@ public class Board : MonoBehaviour // this will handle enemy attacks
         toBeCreated.descriptionString = describeString;
         toBeCreated.boardRef = this;
         toBeCreated.playerHand = activePlayer;
+        toBeCreated.particleScript = particleManangerScript;
+        
         if (friendly) // unused
         {
             activePlayerMinions.Add(toBeCreated);

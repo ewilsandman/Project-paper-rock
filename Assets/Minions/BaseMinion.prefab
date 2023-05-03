@@ -190,7 +190,7 @@ RectTransform:
   m_GameObject: {fileID: 2303190162502371047}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 346619439994558306}
@@ -217,11 +217,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43edbc6f09ccc934bbb03e380670769d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAttacked: 1
   boardRef: {fileID: 0}
   playerHand: {fileID: 0}
   strength: 0
   minionName: Base Minion
   descriptionString: 
+  particleScript: {fileID: 0}
   healthText: {fileID: 6158687511850415523}
   strengthText: {fileID: 5307818916720251840}
   nameText: {fileID: 1652778140969204158}
@@ -334,6 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed4e345fe343f9e49adb1e1122512569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   maxHealth: 0
   minionRef: {fileID: 2303190162502371044}
   playerCharacterRef: {fileID: 0}
