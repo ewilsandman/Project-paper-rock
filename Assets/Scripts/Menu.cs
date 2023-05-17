@@ -13,6 +13,11 @@ public class Menu : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
+
+    public void StartLocalPvp()
+    {
+        SceneManager.LoadScene(2);
+    }
     
 
     // Update is called once per frame
